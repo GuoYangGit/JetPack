@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PKProgressLayout">
+        <!--左边view渐变开始颜色-->
+        <attr name="leftRectStartColor" format="color"/>
+        <!--左边view渐变结束颜色-->
+        <attr name="leftRectEndColor" format="color"/>
+        <!--右边view渐变开始颜色-->
+        <attr name="rightRectStartColor" format="color"/>
+        <!--右边view渐变结束颜色-->
+        <attr name="rightRectEndColor" format="color"/>
+        <!--左边textview的颜色-->
+        <attr name="leftTextColor" format="color"/>
+        <!--右边textview的颜色-->
+        <attr name="rightTextColor" format="color"/>
+        <!--view的圆角角度-->
+        <attr name="rectRadius" format="dimension"/>
+        <!--分割线的背景色-->
+        <attr name="lineColor" format="color"/>
+        <!--分割线的动图-->
+        <attr name="lineIcon" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="PKTimeDownLayout">
+        <attr name="shapeBackgroundColor" format="color"/>
+        <attr name="shapeStrokeColor" format="color"/>
+        <!--view的圆角角度-->
+        <attr name="shapeRadius" format="dimension"/>
+        <attr name="startColor" format="color"/>
+        <attr name="endColor" format="color"/>
+        <attr name="pk_icon" format="reference"/>
+        <attr name="vs_icon" format="reference"/>
+    </declare-styleable>
+</resources>
