@@ -13,14 +13,13 @@
             android:background="@color/teal_200"
             tools:context=".mvvm.ui.MainActivity">
 
-        <Button
-                android:id="@+id/button"
+        <TextView
+                android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{vm.arterialList.toString()}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

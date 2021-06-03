@@ -41,12 +41,7 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         imageLoader.build()
         rxHttpPlugins.setDebug(BuildConfig.DEBUG)
-
-        imageLoader.toString().logD()
-
-        rxHttpPlugins.toString().logD()
     }
 }

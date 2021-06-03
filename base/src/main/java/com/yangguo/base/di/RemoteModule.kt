@@ -1,4 +1,4 @@
-package com.yangguo.jetpack.di
+package com.yangguo.base.di
 
 import com.guoyang.mvvm.network.interceptor.LogInterceptor
 import dagger.Module

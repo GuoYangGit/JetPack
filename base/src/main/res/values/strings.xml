@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hilt_empty">暂时没有数据</string>
+    <string name="retry_onclick">点击我重试</string>
+    <string name="hilt_error">数据获取失败</string>
+</resources>

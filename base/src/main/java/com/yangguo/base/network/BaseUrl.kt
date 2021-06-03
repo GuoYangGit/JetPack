@@ -1,4 +1,6 @@
-package com.yangguo.jetpack.mvvm.vo
+package com.yangguo.base.network
+
+import rxhttp.wrapper.annotation.DefaultDomain
 
 /***
  *
@@ -12,10 +14,10 @@ package com.yangguo.jetpack.mvvm.vo
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  *
- * Created by Yang.Guo on 2021/6/2.
+ * Created by Yang.Guo on 2021/5/31.
  */
-class Response<T> {
-    var errorCode = 0
-    var errorMsg: String? = null
-    var data: T? = null
+object BaseUrl {
+    @JvmField
+    @DefaultDomain
+    var BASE_URL = "https://wanandroid.com/"
 }

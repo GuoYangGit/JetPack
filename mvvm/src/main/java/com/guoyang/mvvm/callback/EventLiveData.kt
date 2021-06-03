@@ -1,6 +1,6 @@
-package com.guoyang.mvvm.network
+package com.guoyang.mvvm.callback
 
-import rxhttp.wrapper.annotation.DefaultDomain
+import com.kunminx.architecture.ui.callback.UnPeekLiveData
 
 /***
  *
@@ -14,10 +14,6 @@ import rxhttp.wrapper.annotation.DefaultDomain
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  *
- * Created by Yang.Guo on 2021/5/31.
+ * Created by Yang.Guo on 2021/6/3.
  */
-object BaseUrl {
-    @JvmField
-    @DefaultDomain
-    var BASE_URL = ""
-}
+class EventLiveData<T> : UnPeekLiveData<T>()

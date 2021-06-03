@@ -3,6 +3,8 @@ package com.yangguo.jetpack.mvvm.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.rxLifeScope
 import com.guoyang.mvvm.base.viewmodel.BaseViewModel
+import com.guoyang.mvvm.ext.request
+import com.guoyang.mvvm.ext.requestWithLoading
 import com.guoyang.mvvm.ext.util.logD
 import com.yangguo.jetpack.mvvm.model.MainRepository
 import com.yangguo.jetpack.mvvm.vo.ArterialBean
@@ -32,13 +34,11 @@ class MainViewModel @Inject constructor(
 
 
     fun getArterialList() {
-        rxLifeScope.launch ({
+        requestWithLoading({
             val result = mainRepository.getArterialList(0)
             result.datas?.let {
                 arterialList.postValue(it[0])
             }
-        },{
-
         })
     }
 }

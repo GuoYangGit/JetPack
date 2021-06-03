@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.provider.Settings
 import android.text.TextUtils
-import android.view.View
 import androidx.core.content.ContextCompat
 
 /***

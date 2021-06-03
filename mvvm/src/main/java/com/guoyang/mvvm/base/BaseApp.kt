@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.multidex.MultiDex
 
 /***
  *
@@ -33,6 +34,7 @@ open class BaseApp : Application(), ViewModelStoreOwner {
 
     override fun onCreate() {
         super.onCreate()
+        MultiDex.install(this)
         mAppViewModelStore = ViewModelStore()
     }
 

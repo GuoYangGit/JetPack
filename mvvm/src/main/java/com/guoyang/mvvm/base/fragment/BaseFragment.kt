@@ -36,6 +36,10 @@ abstract class BaseFragment : Fragment() {
      */
     abstract fun initView(savedInstanceState: Bundle?)
 
+    abstract fun showLoading(message: String)
+
+    abstract fun dismissLoading()
+
     /**
      * Fragment执行onCreate后触发的方法
      */

@@ -1,7 +1,11 @@
-package com.guoyang.mvvm.base.activity
+package com.yangguo.base.network
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import rxhttp.wrapper.annotation.Parser
+import rxhttp.wrapper.entity.ParameterizedTypeImpl
+import rxhttp.wrapper.exception.ParseException
+import rxhttp.wrapper.parse.AbstractParser
+import java.io.IOException
+import java.lang.reflect.Type
 
 /***
  *
@@ -15,43 +19,23 @@ import androidx.appcompat.app.AppCompatActivity
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  *
- * Created by Yang.Guo on 2021/5/31.
+ * Created by Yang.Guo on 2021/6/2.
  */
-abstract class BaseActivity : AppCompatActivity() {
+@Parser(name = "Response")
+open class ResponseParser<T> : AbstractParser<T> {
 
-    /**
-     * 是否需要使用DataBinding 供子类BaseVmDbActivity修改，用户请慎动
-     */
-    private var isUserDb = false
+    //以下两个构造方法是必须的
+    protected constructor() : super()
+    constructor(type: Type) : super(type)
 
-    abstract fun layoutId(): Int
-
-    abstract fun initView(savedInstanceState: Bundle?)
-
-    abstract fun showLoading(message: String)
-
-    abstract fun dismissLoading()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (!isUserDb) {
-            setContentView(layoutId())
-        } else {
-            initDataBind()
+    @Throws(IOException::class)
+    override fun onParse(response: okhttp3.Response): T {
+        val type: Type = ParameterizedTypeImpl[Response::class.java, mType] //获取泛型类型
+        val data: Response<T> = convert(response, type)   //获取Response对象
+        val t = data.data                             //获取data字段
+        if (data.errorCode != 0 || t == null) { //code不等于200，说明数据不正确，抛出异常
+            throw ParseException(data.errorCode.toString(), data.errorMsg, response)
         }
-        init(savedInstanceState)
+        return t
     }
-
-    private fun init(savedInstanceState: Bundle?) {
-        initView(savedInstanceState)
-    }
-
-    fun userDataBinding(isUserDb: Boolean) {
-        this.isUserDb = isUserDb
-    }
-
-    /**
-     * 供子类BaseVmDbActivity 初始化Databinding操作
-     */
-    open fun initDataBind() {}
 }
