@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.guoyang.mvvm">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+          package="com.guoyang.mvvm">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application>
+        <meta-data
+                android:name="design_width_in_dp"
+                android:value="360"/>
+        <meta-data
+                android:name="design_height_in_dp"
+                android:value="640"/>
         <provider
-                android:authorities="${applicationId}.KtxInstaller"
-                android:name=".base.Ktx"
-                android:exported="false" />
+                android:name="androidx.startup.InitializationProvider"
+                android:authorities="${applicationId}.androidx-startup"
+                android:exported="false"
+                tools:node="merge">
+            <!-- This entry makes ExampleLoggerInitializer discoverable. -->
+            <meta-data android:name="com.guoyang.mvvm.base.KtxInitializer"
+                       android:value="androidx.startup"/>
+        </provider>
     </application>
 </manifest>

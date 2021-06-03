@@ -1,20 +1,12 @@
-package com.yangguo.jetpack
+package com.yangguo.jetpack.mvvm.model
 
-import android.app.Application
-import coil.ImageLoader
-import com.guoyang.mvvm.ext.util.logD
-import dagger.hilt.android.HiltAndroidApp
-import rxhttp.RxHttpPlugins
+import com.yangguo.jetpack.mvvm.vo.ArterialBean
+import rxhttp.toStr
+import rxhttp.wrapper.param.RxHttp
+import rxhttp.wrapper.param.toResponse
 import javax.inject.Inject
+import javax.inject.Singleton
 
-/***
- * You may think you know what the following code does.
- * But you dont. Trust me.
- * Fiddle with it, and youll spend many a sleepless
- * night cursing the moment you thought youd be clever
- * enough to "optimize" the code below.
- * Now close this file and go play with something else.
- */
 /***
  *
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -27,26 +19,17 @@ import javax.inject.Inject
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  *
- * Created by yz on 2021/5/26.
- * github https://github.com/GuoYangGit
- * QQ:352391291
+ * Created by Yang.Guo on 2021/6/2.
  */
-@HiltAndroidApp
-class MyApplication : Application() {
-    @Inject
-    lateinit var imageLoader: ImageLoader.Builder
+@Singleton
+class ApiService @Inject constructor() {
+    companion object {
+        const val SERVER_URL = "https://wanandroid.com/"
+    }
 
-    @Inject
-    lateinit var rxHttpPlugins: RxHttpPlugins
-
-    override fun onCreate() {
-        super.onCreate()
-
-        imageLoader.build()
-        rxHttpPlugins.setDebug(BuildConfig.DEBUG)
-
-        imageLoader.toString().logD()
-
-        rxHttpPlugins.toString().logD()
+    suspend fun getArterialList(page: Int): ArterialBean {
+        return RxHttp.get("${SERVER_URL}article/list/$page/json")
+            .toResponse<ArterialBean>()
+            .await()
     }
 }

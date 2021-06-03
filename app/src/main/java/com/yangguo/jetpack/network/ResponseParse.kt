@@ -1,20 +1,13 @@
-package com.yangguo.jetpack
+package com.yangguo.jetpack.network
 
-import android.app.Application
-import coil.ImageLoader
-import com.guoyang.mvvm.ext.util.logD
-import dagger.hilt.android.HiltAndroidApp
-import rxhttp.RxHttpPlugins
-import javax.inject.Inject
+import com.yangguo.jetpack.mvvm.vo.Response
+import rxhttp.wrapper.annotation.Parser
+import rxhttp.wrapper.entity.ParameterizedTypeImpl
+import rxhttp.wrapper.exception.ParseException
+import rxhttp.wrapper.parse.AbstractParser
+import java.io.IOException
+import java.lang.reflect.Type
 
-/***
- * You may think you know what the following code does.
- * But you dont. Trust me.
- * Fiddle with it, and youll spend many a sleepless
- * night cursing the moment you thought youd be clever
- * enough to "optimize" the code below.
- * Now close this file and go play with something else.
- */
 /***
  *
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -27,26 +20,23 @@ import javax.inject.Inject
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  *
- * Created by yz on 2021/5/26.
- * github https://github.com/GuoYangGit
- * QQ:352391291
+ * Created by Yang.Guo on 2021/6/2.
  */
-@HiltAndroidApp
-class MyApplication : Application() {
-    @Inject
-    lateinit var imageLoader: ImageLoader.Builder
+@Parser(name = "Response")
+open class ResponseParser<T> : AbstractParser<T> {
 
-    @Inject
-    lateinit var rxHttpPlugins: RxHttpPlugins
+    //以下两个构造方法是必须的
+    protected constructor() : super()
+    constructor(type: Type) : super(type)
 
-    override fun onCreate() {
-        super.onCreate()
-
-        imageLoader.build()
-        rxHttpPlugins.setDebug(BuildConfig.DEBUG)
-
-        imageLoader.toString().logD()
-
-        rxHttpPlugins.toString().logD()
+    @Throws(IOException::class)
+    override fun onParse(response: okhttp3.Response): T {
+        val type: Type = ParameterizedTypeImpl[Response::class.java, mType] //获取泛型类型
+        val data: Response<T> = convert(response, type)   //获取Response对象
+        val t = data.data                             //获取data字段
+        if (data.errorCode != 0 || t == null) { //code不等于200，说明数据不正确，抛出异常
+            throw ParseException(data.errorCode.toString(), data.errorMsg, response)
+        }
+        return t
     }
 }

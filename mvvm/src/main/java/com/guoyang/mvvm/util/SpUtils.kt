@@ -18,70 +18,75 @@ import com.tencent.mmkv.MMKV
  * Created by Yang.Guo on 2021/6/1.
  */
 object SpUtils {
-    private val defaultMapID = "app"
+    private const val defaultMapID: String = "app"
 
     fun init(context: Context, pathName: String = "/mmkv") {
         val root = context.filesDir.absolutePath + "/mmkv"
         MMKV.initialize(root)
     }
 
-    fun putString(key: String, value: String) {
-        val kv = MMKV.mmkvWithID(defaultMapID)
+    fun putString(key: String, value: String, mmapID: String = defaultMapID) {
+        val kv = MMKV.mmkvWithID(mmapID)
         kv.encode(key, value)
     }
 
-    fun putInt(key: String, value: Int) {
-        val kv = MMKV.mmkvWithID(defaultMapID)
+    fun putInt(key: String, value: Int, mmapID: String = defaultMapID) {
+        val kv = MMKV.mmkvWithID(mmapID)
         kv.encode(key, value)
     }
 
-    fun putBoolean(key: String, value: Boolean) {
-        val kv = MMKV.mmkvWithID(defaultMapID)
+    fun putBoolean(key: String, value: Boolean, mmapID: String = defaultMapID) {
+        val kv = MMKV.mmkvWithID(mmapID)
         kv.encode(key, value)
     }
 
-    fun putFloat(key: String, value: Float) {
-        val kv = MMKV.mmkvWithID(defaultMapID)
+    fun putFloat(key: String, value: Float, mmapID: String = defaultMapID) {
+        val kv = MMKV.mmkvWithID(mmapID)
         kv.encode(key, value)
     }
 
-    fun putDouble(key: String, value: Double) {
-        val kv = MMKV.mmkvWithID(defaultMapID)
+    fun putDouble(key: String, value: Double, mmapID: String = defaultMapID) {
+        val kv = MMKV.mmkvWithID(mmapID)
         kv.encode(key, value)
     }
 
-    fun putLong(key: String, value: Long) {
-        val kv = MMKV.mmkvWithID(defaultMapID)
+    fun putLong(key: String, value: Long, mmapID: String = defaultMapID) {
+        val kv = MMKV.mmkvWithID(mmapID)
         kv.encode(key, value)
     }
 
-    fun getString(key: String, defaultValue: String) {
-        val kv = MMKV.mmkvWithID(defaultMapID)
-        kv.decodeString(key, defaultValue)
+    fun getString(key: String, defaultValue: String = "", mmapID: String = defaultMapID): String {
+        val kv = MMKV.mmkvWithID(mmapID)
+        return kv.decodeString(key, defaultValue)
     }
 
-    fun getInt(key: String, defaultValue: Int) {
-        val kv = MMKV.mmkvWithID(defaultMapID)
-        kv.decodeInt(key, defaultValue)
+    fun getInt(key: String, defaultValue: Int = 0, mmapID: String = defaultMapID): Int {
+        val kv = MMKV.mmkvWithID(mmapID)
+        return kv.decodeInt(key, defaultValue)
     }
 
-    fun getBoolean(key: String, defaultValue: Boolean): Boolean {
-        val kv = MMKV.mmkvWithID(defaultMapID)
+    fun getBoolean(key: String, defaultValue: Boolean = false, mmapID: String = defaultMapID): Boolean {
+        val kv = MMKV.mmkvWithID(mmapID)
         return kv.decodeBool(key, defaultValue)
     }
 
-    fun getFloat(key: String, defaultValue: Float): Float {
-        val kv = MMKV.mmkvWithID(defaultMapID)
+    fun getFloat(key: String, defaultValue: Float = 0f, mmapID: String = defaultMapID): Float {
+        val kv = MMKV.mmkvWithID(mmapID)
         return kv.decodeFloat(key, defaultValue)
     }
 
-    fun getDouble(key: String, defaultValue: Double): Double {
-        val kv = MMKV.mmkvWithID(defaultMapID)
+    fun getDouble(key: String, defaultValue: Double = 0.00, mmapID: String = defaultMapID): Double {
+        val kv = MMKV.mmkvWithID(mmapID)
         return kv.decodeDouble(key, defaultValue)
     }
 
-    fun getLong(key: String, defaultValue: Long): Long {
-        val kv = MMKV.mmkvWithID(defaultMapID)
+    fun getLong(key: String, defaultValue: Long = 0L, mmapID: String = defaultMapID): Long {
+        val kv = MMKV.mmkvWithID(mmapID)
         return kv.decodeLong(key, defaultValue)
+    }
+
+    fun clear(mmapID: String = defaultMapID) {
+        val kv = MMKV.mmkvWithID(defaultMapID)
+        kv.clear()
     }
 }
