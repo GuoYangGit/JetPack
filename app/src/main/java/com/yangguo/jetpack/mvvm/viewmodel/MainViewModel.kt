@@ -1,13 +1,9 @@
 package com.yangguo.jetpack.mvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.rxLifeScope
 import com.guoyang.mvvm.base.viewmodel.BaseViewModel
-import com.guoyang.mvvm.ext.request
 import com.guoyang.mvvm.ext.requestWithLoading
-import com.guoyang.mvvm.ext.util.logD
 import com.yangguo.jetpack.mvvm.model.MainRepository
-import com.yangguo.jetpack.mvvm.vo.ArterialBean
 import com.yangguo.jetpack.mvvm.vo.Data
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

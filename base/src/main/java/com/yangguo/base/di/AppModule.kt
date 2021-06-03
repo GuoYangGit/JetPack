@@ -9,6 +9,7 @@ import coil.decode.SvgDecoder
 import coil.decode.VideoFrameDecoder
 import coil.fetch.VideoFrameFileFetcher
 import coil.fetch.VideoFrameUriFetcher
+import com.guoyang.mvvm.ext.util.logD
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +36,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideImageLoader(appContext: Application): ImageLoader.Builder {
+    fun provideImageLoader(appContext: Application): ImageLoader {
+        "provideImageLoader".logD(this.toString())
         return ImageLoader.Builder(appContext)
             .availableMemoryPercentage(0.25)
             .componentRegistry {
@@ -50,5 +52,6 @@ class AppModule {
                 add(VideoFrameDecoder(appContext))
             }
             .crossfade(true)
+            .build()
     }
 }

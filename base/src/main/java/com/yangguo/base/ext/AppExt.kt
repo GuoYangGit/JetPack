@@ -1,6 +1,9 @@
-package com.guoyang.mvvm.ext.util
+package com.guoyang.mvvm.ext
 
-import android.util.Log
+import android.text.TextUtils
+import java.io.BufferedReader
+import java.io.FileReader
+import java.io.IOException
 
 /***
  *
@@ -14,30 +17,32 @@ import android.util.Log
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  *
- * Created by Yang.Guo on 2021/5/31.
+ * Created by Yang.Guo on 2021/6/3.
  */
-const val TAG = "JetpackMvvm"
+/**
+ * 获取进程号对应的进程名
+ *
+ * @param pid 进程号
+ * @return 进程名
+ */
+fun getProcessName(pid: Int): String? {
+    var reader: BufferedReader? = null
+    try {
+        reader = BufferedReader(FileReader("/proc/$pid/cmdline"))
+        var processName = reader.readLine()
+        if (!TextUtils.isEmpty(processName)) {
+            processName = processName.trim { it <= ' ' }
+        }
+        return processName
+    } catch (throwable: Throwable) {
+        throwable.printStackTrace()
+    } finally {
+        try {
+            reader?.close()
+        } catch (exception: IOException) {
+            exception.printStackTrace()
+        }
 
-var mvvmLog = true
-
-private enum class LEVEL {
-    V, D, I, W, E
-}
-
-fun String.logV(tag: String = TAG) = log(LEVEL.V, tag, this)
-fun String.logD(tag: String = TAG) = log(LEVEL.D, tag, this)
-fun String.logI(tag: String = TAG) = log(LEVEL.I, tag, this)
-fun String.logW(tag: String = TAG) = log(LEVEL.W, tag, this)
-fun String.logE(tag: String = TAG) = log(LEVEL.E, tag, this)
-
-
-private fun log(level: LEVEL, tag: String, message: String) {
-    if (!mvvmLog) return
-    when (level) {
-        LEVEL.V -> Log.v(tag, message)
-        LEVEL.D -> Log.d(tag, message)
-        LEVEL.I -> Log.i(tag, message)
-        LEVEL.W -> Log.w(tag, message)
-        LEVEL.E -> Log.e(tag, message)
     }
+    return null
 }
