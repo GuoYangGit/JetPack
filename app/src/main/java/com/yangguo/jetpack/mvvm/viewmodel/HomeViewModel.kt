@@ -23,7 +23,7 @@ import javax.inject.Inject
  * Created by Yang.Guo on 2021/5/31.
  */
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ) : BaseViewModel() {
     val arterialList: MutableLiveData<Data> = MutableLiveData()

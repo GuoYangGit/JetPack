@@ -10,6 +10,11 @@ import coil.decode.VideoFrameDecoder
 import coil.fetch.VideoFrameFileFetcher
 import coil.fetch.VideoFrameUriFetcher
 import com.guoyang.mvvm.ext.util.logD
+import com.kingja.loadsir.callback.SuccessCallback
+import com.kingja.loadsir.core.LoadSir
+import com.yangguo.base.weight.loadCallBack.EmptyCallback
+import com.yangguo.base.weight.loadCallBack.ErrorCallback
+import com.yangguo.base.weight.loadCallBack.LoadingCallback
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,5 +58,17 @@ class AppModule {
             }
             .crossfade(true)
             .build()
+    }
+    
+    
+    @Provides
+    @Singleton
+    fun provideLoadSirBuild(): LoadSir.Builder{
+        //界面加载管理 初始化
+        return LoadSir.beginBuilder()
+            .addCallback(LoadingCallback())//加载
+            .addCallback(ErrorCallback())//错误
+            .addCallback(EmptyCallback())//空
+            .setDefaultCallback(SuccessCallback::class.java)//设置默认加载状态页
     }
 }

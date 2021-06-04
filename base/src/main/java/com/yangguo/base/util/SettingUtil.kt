@@ -30,7 +30,7 @@ object SettingUtil {
 
     }
 
-    private fun getOneColorStateList(color: Int): ColorStateList {
+    fun getOneColorStateList(color: Int): ColorStateList {
         val colors = intArrayOf(color)
         val states = arrayOfNulls<IntArray>(1)
         states[0] = intArrayOf()

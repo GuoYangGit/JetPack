@@ -4,13 +4,9 @@ import android.app.Application
 import coil.ImageLoader
 import com.guoyang.mvvm.ext.getProcessName
 import com.guoyang.mvvm.ext.util.mvvmLog
-import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.crashreport.CrashReport
-import com.yangguo.base.weight.loadCallBack.EmptyCallback
-import com.yangguo.base.weight.loadCallBack.ErrorCallback
-import com.yangguo.base.weight.loadCallBack.LoadingCallback
 import dagger.hilt.android.HiltAndroidApp
 import rxhttp.RxHttpPlugins
 import javax.inject.Inject
@@ -47,21 +43,23 @@ class MyApplication : Application() {
     @Inject
     lateinit var rxHttpPlugins: RxHttpPlugins
 
+    @Inject
+    lateinit var loadSir: LoadSir.Builder
+
     override fun onCreate() {
         super.onCreate()
-
         mvvmLog = BuildConfig.DEBUG
+        rxHttpPlugins.setDebug(BuildConfig.DEBUG)
+        loadSir.commit()
 
-//        rxHttpPlugins.setDebug(BuildConfig.DEBUG)
-
-        //界面加载管理 初始化
-        LoadSir.beginBuilder()
-            .addCallback(LoadingCallback())//加载
-            .addCallback(ErrorCallback())//错误
-            .addCallback(EmptyCallback())//空
-            .setDefaultCallback(SuccessCallback::class.java)//设置默认加载状态页
-            .commit()
         //初始化Bugly
+        initBugly()
+    }
+
+    /**
+     * 初始化Bugly
+     */
+    private fun initBugly() {
         val context = applicationContext
         // 获取当前包名
         val packageName = context.packageName
