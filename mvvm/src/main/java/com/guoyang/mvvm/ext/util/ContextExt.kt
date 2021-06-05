@@ -5,7 +5,10 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.provider.Settings
 import android.text.TextUtils
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import java.time.Duration
 
 /***
  *
@@ -75,4 +78,16 @@ fun Context.checkAccessibilityServiceEnabled(serviceName: String): Boolean {
         }
     }
     return result
+}
+
+/**
+ * 显示toast
+ */
+fun Fragment.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) = context?.showToast(text, duration)
+
+/**
+ * 显示toast
+ */
+fun Context.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, text, duration).show()
 }

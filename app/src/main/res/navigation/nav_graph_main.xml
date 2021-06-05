@@ -8,8 +8,20 @@
     <fragment
             android:id="@+id/main_fragment"
             android:name="com.yangguo.jetpack.mvvm.ui.MainFragment"
-            android:label="HomeFragment"
+            android:label="MainFragment"
             tools:layout="@layout/fragment_main">
 
     </fragment>
+
+    <fragment
+            android:id="@+id/home_fragment"
+            android:name="com.yangguo.jetpack.mvvm.ui.HomeFragment"
+            android:label="HomeFragment"
+            tools:layout="@layout/fragment_home"/>
+    <fragment
+            android:id="@+id/me_fragment"
+            android:name="com.yangguo.jetpack.mvvm.ui.MeFragment"
+            android:label="MeFragment"
+            tools:layout="@layout/fragment_me"
+        />
 </navigation>

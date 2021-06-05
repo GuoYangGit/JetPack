@@ -10,6 +10,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--  主题文字  -->
+    <color name="title_color">#000000</color>
     <color name="content_color">#333333</color>
     <color name="hilt_color">#666666</color>
 </resources>

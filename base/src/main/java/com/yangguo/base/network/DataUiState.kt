@@ -1,13 +1,4 @@
-package com.yangguo.jetpack.mvvm.viewmodel
-
-import androidx.lifecycle.MutableLiveData
-import com.guoyang.mvvm.base.viewmodel.BaseViewModel
-import com.guoyang.mvvm.ext.launch
-import com.yangguo.base.network.DataUiState
-import com.yangguo.jetpack.mvvm.model.MainRepository
-import com.yangguo.jetpack.mvvm.vo.ArterialBean
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+package com.yangguo.base.network
 
 /***
  *
@@ -21,24 +12,18 @@ import javax.inject.Inject
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  *
- * Created by Yang.Guo on 2021/5/31.
+ * Created by Yang.Guo on 2021/6/5.
  */
-@HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val mainRepository: MainRepository
-) : BaseViewModel() {
-    val arterialList: MutableLiveData<DataUiState<List<ArterialBean.Data>>> = MutableLiveData()
-    var page: Int = 0
-
-    fun getArterialList(isRefresh: Boolean) {
-        launch({
-            if (isRefresh) page = 0 else page += 1
-            val result = mainRepository.getArterialList(page)
-            arterialList.postValue(DataUiState.onSuccess(result.datas, isRefresh))
-        }, {
-            arterialList.postValue(DataUiState.onError(it, isRefresh))
-        }, {
-            arterialList.postValue(DataUiState.onStart(isRefresh = isRefresh))
-        })
+sealed class DataUiState<out T> {
+    companion object {
+        fun <T> onStart(loadMsg: String = "", isRefresh: Boolean = true): DataUiState<T> = Start(loadMsg, isRefresh)
+        fun <T> onSuccess(data: T?, isRefresh: Boolean = true): DataUiState<T> = Success(data, isRefresh)
+        fun <T> onError(error: Throwable, isRefresh: Boolean = true): DataUiState<T> = Error(error, isRefresh)
     }
+
+    data class Start(val loadMsg: String, val isRefresh: Boolean) : DataUiState<Nothing>()
+
+    data class Success<out T>(val data: T?, val isRefresh: Boolean) : DataUiState<T>()
+
+    data class Error(val error: Throwable, val isRefresh: Boolean) : DataUiState<Nothing>()
 }

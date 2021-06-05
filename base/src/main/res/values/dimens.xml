@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="content_size">14sp</dimen>
+    <dimen name="hilt_size">12sp</dimen>
+    <dimen name="tag_size">10sp</dimen>
 </resources>

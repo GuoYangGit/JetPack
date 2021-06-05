@@ -3,9 +3,8 @@ package com.yangguo.jetpack.mvvm.ui
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.guoyang.mvvm.base.appContext
+import com.guoyang.mvvm.ext.util.logD
 import com.yangguo.base.ui.BaseVMFragment
-import com.yangguo.base.util.SettingUtil
 import com.yangguo.jetpack.R
 import com.yangguo.jetpack.databinding.FragmentMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,26 +25,27 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class MainFragment : BaseVMFragment<FragmentMainBinding>() {
-    private val fragmentList: List<Fragment> by lazy {
-        listOf(
-            HomeFragment(),
-            HomeFragment(),
-            HomeFragment(),
-            HomeFragment(),
-            HomeFragment()
-        )
-    }
 
     override fun layoutId(): Int = R.layout.fragment_main
 
     override fun initView(savedInstanceState: Bundle?) {
-        mDataBinding.run {
+        binding.run {
             mainViewpager.run {
                 isUserInputEnabled = false // 设置不可以滑动
                 adapter = object : FragmentStateAdapter(this@MainFragment) {
-                    override fun getItemCount(): Int = fragmentList.size
+                    override fun getItemCount(): Int = 5
 
-                    override fun createFragment(position: Int): Fragment = fragmentList[position]
+                    override fun createFragment(position: Int): Fragment {
+                        "this is createFragment $position".logD(this@MainFragment.toString())
+                        return when (position) {
+                            0 -> {
+                                HomeFragment()
+                            }
+                            else -> {
+                                MeFragment()
+                            }
+                        }
+                    }
                 }
             }
 

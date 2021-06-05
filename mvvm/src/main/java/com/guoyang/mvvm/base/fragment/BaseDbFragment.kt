@@ -22,11 +22,11 @@ import androidx.databinding.ViewDataBinding
  * Created by Yang.Guo on 2021/6/2.
  */
 abstract class BaseDbFragment<DB : ViewDataBinding> : BaseFragment() {
-    lateinit var mDataBinding: DB
+    lateinit var binding: DB
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mDataBinding = DataBindingUtil.inflate(inflater, layoutId(), container, false)
-        mDataBinding.lifecycleOwner = this
-        return mDataBinding.root
+        binding = DataBindingUtil.inflate(inflater, layoutId(), container, false)
+        binding.lifecycleOwner = this
+        return binding.root
     }
 }

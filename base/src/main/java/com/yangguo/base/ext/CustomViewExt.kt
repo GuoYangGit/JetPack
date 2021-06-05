@@ -9,9 +9,9 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.yangguo.base.R
 import com.yangguo.base.util.SettingUtil
-import com.yangguo.base.weight.loadCallBack.EmptyCallback
-import com.yangguo.base.weight.loadCallBack.ErrorCallback
-import com.yangguo.base.weight.loadCallBack.LoadingCallback
+import com.yangguo.base.weight.loadcallback.EmptyCallback
+import com.yangguo.base.weight.loadcallback.ErrorCallback
+import com.yangguo.base.weight.loadcallback.LoadingCallback
 
 /***
  *

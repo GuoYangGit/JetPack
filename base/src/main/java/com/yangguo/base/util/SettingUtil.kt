@@ -10,7 +10,7 @@ import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
 import com.kingja.loadsir.core.LoadService
 import com.yangguo.base.R
-import com.yangguo.base.weight.loadCallBack.LoadingCallback
+import com.yangguo.base.weight.loadcallback.LoadingCallback
 
 
 object SettingUtil {

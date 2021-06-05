@@ -1,8 +1,11 @@
-package com.guoyang.mvvm.base.activity
+package com.yangguo.base.ext
 
-import android.os.Bundle
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
+import coil.load
+import com.guoyang.mvvm.ext.util.toHtml
 
 /***
  *
@@ -16,18 +19,20 @@ import androidx.databinding.ViewDataBinding
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  *
- * Created by Yang.Guo on 2021/6/2.
+ * Created by Yang.Guo on 2021/6/5.
  */
-abstract class BaseDbActivity<DB : ViewDataBinding> : BaseActivity() {
-    lateinit var binding: DB
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        userDataBinding(true)
-        super.onCreate(savedInstanceState)
-    }
+@BindingAdapter("bind:isVisible")
+fun View.isVisible(isVisible: Boolean?) {
+    visibility = if (isVisible == true) View.VISIBLE else View.GONE
+}
 
-    override fun initDataBind() {
-        binding = DataBindingUtil.setContentView(this, layoutId())
-        binding.lifecycleOwner = this
-    }
+@BindingAdapter("bind:html")
+fun TextView.toHtml(html: String?) {
+    text = html?.toHtml()
+}
+
+@BindingAdapter("bind:loadUrl")
+fun ImageView.loadUrl(url: String?) {
+    load(url)
 }

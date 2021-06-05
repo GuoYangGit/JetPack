@@ -26,22 +26,13 @@ fun BaseViewModel.requestWithLoading(
     onStart: (() -> Unit)? = null,
     onFinally: (() -> Unit)? = null,
     loadingMessage: String = "请求网络中..."
-): Job = request(block, onError, onStart, onFinally, true, loadingMessage)
-
-fun BaseViewModel.request(
-    block: suspend CoroutineScope.() -> Unit,
-    onError: ((Throwable) -> Unit)? = null,
-    onStart: (() -> Unit)? = null,
-    onFinally: (() -> Unit)? = null,
-    isShowDialog: Boolean = false,
-    loadingMessage: String = "请求网络中..."
 ): Job {
     //如果需要弹窗 通知Activity/fragment弹窗
     return launch(block, onError, {
-        if (isShowDialog) loadingChange.showDialog.postValue(loadingMessage)
+        loadingChange.showDialog.postValue(loadingMessage)
         onStart?.invoke()
     }, {
-        if (isShowDialog) loadingChange.dismissDialog.postValue(false)
+        loadingChange.dismissDialog.postValue(false)
         onFinally?.invoke()
     })
 }
@@ -56,5 +47,5 @@ fun BaseViewModel.launch(
     block: suspend CoroutineScope.() -> Unit,
     onError: ((Throwable) -> Unit)? = null,
     onStart: (() -> Unit)? = null,
-    onFinally: (() -> Unit)? = null,
+    onFinally: (() -> Unit)? = null
 ): Job = rxLifeScope.launch(block, onError, onStart, onFinally)

@@ -1,14 +1,13 @@
-package com.yangguo.base.weight.loadCallBack
-
+package com.yangguo.base.weight.loadcallback
 
 import com.kingja.loadsir.callback.Callback
 import com.yangguo.base.R
 
 
-class EmptyCallback : Callback() {
+class ErrorCallback : Callback() {
 
     override fun onCreateView(): Int {
-        return R.layout.layout_empty
+        return R.layout.layout_error
     }
 
 }

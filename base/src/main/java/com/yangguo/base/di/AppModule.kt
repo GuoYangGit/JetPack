@@ -12,9 +12,9 @@ import coil.fetch.VideoFrameUriFetcher
 import com.guoyang.mvvm.ext.util.logD
 import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
-import com.yangguo.base.weight.loadCallBack.EmptyCallback
-import com.yangguo.base.weight.loadCallBack.ErrorCallback
-import com.yangguo.base.weight.loadCallBack.LoadingCallback
+import com.yangguo.base.weight.loadcallback.EmptyCallback
+import com.yangguo.base.weight.loadcallback.ErrorCallback
+import com.yangguo.base.weight.loadcallback.LoadingCallback
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
