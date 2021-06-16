@@ -21,7 +21,6 @@ import com.yangguo.jetpack.mvvm.adapter.ArterialAdapter
 import com.yangguo.jetpack.mvvm.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.yangguo.base.weight.recyclerview.SpaceItemDecoration
-import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 
 /***
@@ -50,12 +49,6 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
     override fun layoutId(): Int = R.layout.fragment_home
 
     override fun initView(savedInstanceState: Bundle?) {
-        UltimateBarX.with(this)
-            .light(true)
-            .transparent()
-            .apply {
-                applyNavigationBar()
-            }
         binding.run {
             toolBar.run {
                 init("首页")

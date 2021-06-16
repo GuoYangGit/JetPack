@@ -26,6 +26,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding>() {
             .transparent()
             .apply {
                 applyStatusBar()
+                applyNavigationBar()
             }
         //进入首页检查更新
 //        Beta.checkUpgrade(false, true)

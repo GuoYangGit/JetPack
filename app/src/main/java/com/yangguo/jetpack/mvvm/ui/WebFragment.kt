@@ -1,11 +1,10 @@
 package com.yangguo.jetpack.mvvm.ui
 
 import android.os.Bundle
-import android.widget.LinearLayout
+import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import com.guoyang.mvvm.ext.nav
 import com.just.agentweb.AgentWeb
-import com.yangguo.base.ext.init
 import com.yangguo.base.ext.initClose
 import com.yangguo.base.ui.BaseVMFragment
 import com.yangguo.jetpack.R
@@ -51,17 +50,22 @@ class WebFragment : BaseVMFragment<FragmentWebBinding>() {
 //                viewModel.collectType = CollectType.Ariticle.type
             }
         }
+        binding.run {
+            toolBar.run {
+                initClose(viewModel.showTitle, onBack = {
+                    nav().navigateUp()
+                })
+                addStatusBarTopPadding()
+            }
+            navigationBar.run {
+                addNavigationBarBottomPadding()
+            }
+        }
         preWeb = AgentWeb.with(this)
-            .setAgentWebParent(binding.webLayout, LinearLayout.LayoutParams(-1, -1))
+            .setAgentWebParent(binding.webLayout, FrameLayout.LayoutParams(-1, -1))
             .useDefaultIndicator()
             .createAgentWeb()
             .ready()
-        binding.toolBar.run {
-            initClose(viewModel.showTitle, onBack = {
-                nav().navigateUp()
-            })
-            addStatusBarTopPadding()
-        }
     }
 
     override fun lazyLoadData() {
