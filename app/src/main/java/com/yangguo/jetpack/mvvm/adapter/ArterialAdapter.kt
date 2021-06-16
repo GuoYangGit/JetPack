@@ -34,11 +34,9 @@ class ArterialAdapter(data: MutableList<ArterialBean.Data> = mutableListOf(), pr
             }
 
             override fun areContentsTheSame(oldItem: ArterialBean.Data, newItem: ArterialBean.Data): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem == newItem
             }
         })
-        // 设置空布局
-        setEmptyView(R.layout.layout_empty)
     }
 
     override fun convert(holder: BaseDataBindingHolder<ItemProjectBinding>, item: ArterialBean.Data) {

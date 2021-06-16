@@ -2,17 +2,15 @@ package com.yangguo.base.ext
 
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.guoyang.mvvm.base.appContext
-import com.guoyang.mvvm.ext.util.showToast
-import com.guoyang.mvvm.network.msg
 import com.guoyang.mvvm.state.DataUiState
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -127,6 +125,30 @@ fun SwipeRefreshLayout.init(onRefreshListener: () -> Unit) {
         setColorSchemeColors(SettingUtil.getColor(appContext))
     }
 }
+
+/**
+ * 初始化普通的toolbar 只设置标题
+ */
+fun Toolbar.init(titleStr: String = ""): Toolbar {
+    setBackgroundColor(SettingUtil.getColor(appContext))
+    title = titleStr
+    return this
+}
+
+/**
+ * 初始化有返回键的toolbar
+ */
+fun Toolbar.initClose(
+    titleStr: String = "",
+    backImg: Int = R.drawable.ic_back,
+    onBack: (toolbar: Toolbar) -> Unit
+): Toolbar {
+    init(titleStr)
+    setNavigationIcon(backImg)
+    setNavigationOnClickListener { onBack.invoke(this) }
+    return this
+}
+
 
 fun <T> MutableLiveData<DataUiState<T>>.observeUi(
     owner: LifecycleOwner,

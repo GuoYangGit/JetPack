@@ -21,7 +21,7 @@ object SettingUtil {
      */
     fun getColor(context: Context): Int = context.getCompatColor(R.color.purple_200)
 
-    fun getOneColorStateList(color: Int): ColorStateList {
+    private fun getOneColorStateList(color: Int): ColorStateList {
         val colors = intArrayOf(color)
         val states = arrayOfNulls<IntArray>(1)
         states[0] = intArrayOf()

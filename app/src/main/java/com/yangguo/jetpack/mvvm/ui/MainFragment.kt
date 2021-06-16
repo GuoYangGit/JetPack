@@ -8,7 +8,6 @@ import com.yangguo.base.ui.BaseVMFragment
 import com.yangguo.jetpack.R
 import com.yangguo.jetpack.databinding.FragmentMainBinding
 import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
-import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import dagger.hilt.android.AndroidEntryPoint
 
 /***
@@ -32,10 +31,6 @@ class MainFragment : BaseVMFragment<FragmentMainBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         binding.run {
-            container.run {
-                addStatusBarTopPadding()
-                addNavigationBarBottomPadding()
-            }
             mainViewpager.run {
                 isUserInputEnabled = false // 设置不可以滑动
                 adapter = object : FragmentStateAdapter(this@MainFragment) {
@@ -56,6 +51,7 @@ class MainFragment : BaseVMFragment<FragmentMainBinding>() {
             }
 
             mainBtn.run {
+                addNavigationBarBottomPadding()
                 enableAnimation(true) // 点击动画(默认开启)
                 enableShiftingMode(false) // 导航条位移模式
                 enableItemShiftingMode(true) // 子菜单位移模式

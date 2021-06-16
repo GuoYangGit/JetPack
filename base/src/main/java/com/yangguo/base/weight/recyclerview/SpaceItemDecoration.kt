@@ -9,7 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class SpaceItemDecoration(private val leftRight: Int, private val topBottom: Int,private val firstNeedTop:Boolean = true) : RecyclerView.ItemDecoration() {
+class SpaceItemDecoration(
+    private val leftRight: Int,
+    private val topBottom: Int,
+    private val firstNeedTop: Boolean = false
+) : RecyclerView.ItemDecoration() {
 
     @SuppressLint("WrongConstant")
     override fun getItemOffsets(
@@ -25,9 +29,9 @@ class SpaceItemDecoration(private val leftRight: Int, private val topBottom: Int
             if (parent.getChildAdapterPosition(view) == layoutManager.itemCount - 1) {
                 outRect.bottom = topBottom
             }
-            if(!firstNeedTop&&parent.getChildAdapterPosition(view)==0){
+            if (!firstNeedTop && parent.getChildAdapterPosition(view) == 0) {
                 outRect.top = 0
-            }else{
+            } else {
                 outRect.top = topBottom
             }
             outRect.left = leftRight

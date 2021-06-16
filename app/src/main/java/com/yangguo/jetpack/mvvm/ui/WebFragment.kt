@@ -3,7 +3,10 @@ package com.yangguo.jetpack.mvvm.ui
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
+import com.guoyang.mvvm.ext.nav
 import com.just.agentweb.AgentWeb
+import com.yangguo.base.ext.init
+import com.yangguo.base.ext.initClose
 import com.yangguo.base.ui.BaseVMFragment
 import com.yangguo.jetpack.R
 import com.yangguo.jetpack.databinding.FragmentWebBinding
@@ -38,10 +41,6 @@ class WebFragment : BaseVMFragment<FragmentWebBinding>() {
     override fun layoutId(): Int = R.layout.fragment_web
 
     override fun initView(savedInstanceState: Bundle?) {
-        binding.webLayout.run {
-            addStatusBarTopPadding()
-            addNavigationBarBottomPadding()
-        }
         //点击文章进来的
         arguments?.run {
             getParcelable<ArterialBean.Data>("articleData")?.let {
@@ -57,6 +56,12 @@ class WebFragment : BaseVMFragment<FragmentWebBinding>() {
             .useDefaultIndicator()
             .createAgentWeb()
             .ready()
+        binding.toolBar.run {
+            initClose(viewModel.showTitle, onBack = {
+                nav().navigateUp()
+            })
+            addStatusBarTopPadding()
+        }
     }
 
     override fun lazyLoadData() {

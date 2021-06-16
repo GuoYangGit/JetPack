@@ -21,6 +21,8 @@ import com.yangguo.jetpack.mvvm.adapter.ArterialAdapter
 import com.yangguo.jetpack.mvvm.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.yangguo.base.weight.recyclerview.SpaceItemDecoration
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 
 /***
  *
@@ -48,15 +50,30 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
     override fun layoutId(): Int = R.layout.fragment_home
 
     override fun initView(savedInstanceState: Bundle?) {
-        binding.recyclerView.initBRVAH(LinearLayoutManager(context), adapter, loadMoreListener = {
-            viewModel.getArterialList(false)
-        }).run {
-            addItemDecoration(SpaceItemDecoration(0, 8 * dpi, false))
-        }
-        binding.swipeRefresh.init {
-            viewModel.getArterialList(true)
+        UltimateBarX.with(this)
+            .light(true)
+            .transparent()
+            .apply {
+                applyNavigationBar()
+            }
+        binding.run {
+            toolBar.run {
+                init("首页")
+                addStatusBarTopPadding()
+            }
+            recyclerView.initBRVAH(LinearLayoutManager(context), adapter, loadMoreListener = {
+                viewModel.getArterialList(false)
+            }).run {
+                addItemDecoration(SpaceItemDecoration(0, 8 * dpi))
+            }
+            swipeRefresh.init {
+                viewModel.getArterialList(true)
+            }
         }
         adapter.run {
+            // 设置空布局
+            setEmptyView(R.layout.layout_empty)
+            // 设置点击事件
             setNbOnItemClickListener { adapter, _, position ->
                 nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {
                     putParcelable(
@@ -70,7 +87,7 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
 
     override fun initData() {
         viewModel.getArterialList(true)
-        viewModel.arterialList.observeUi(this, {
+        viewModel.arterialList.observeUi(viewLifecycleOwner, {
             when (it) {
                 is DataUiState.Success -> {
                     if (it.isRefresh) {
