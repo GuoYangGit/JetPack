@@ -6,6 +6,8 @@ import android.content.Context
 import android.provider.Settings
 import android.text.TextUtils
 import android.widget.Toast
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import java.time.Duration
@@ -91,3 +93,5 @@ fun Fragment.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) = conte
 fun Context.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, text, duration).show()
 }
+
+fun Context.getCompatColor(@ColorRes colorID: Int): Int = ContextCompat.getColor(this, colorID)

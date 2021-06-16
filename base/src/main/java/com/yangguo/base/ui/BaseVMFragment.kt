@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import com.guoyang.mvvm.base.fragment.BaseDbFragment
 import com.guoyang.mvvm.base.viewmodel.BaseViewModel
+import com.guoyang.mvvm.state.UILoadingState
 import com.yangguo.base.ext.dismissLoadingExt
 import com.yangguo.base.ext.showLoadingExt
 
@@ -50,13 +51,17 @@ abstract class BaseVMFragment<DB : ViewDataBinding> : BaseDbFragment<DB>() {
      */
     protected fun addLoadingObserve(vararg viewModels: BaseViewModel) {
         viewModels.forEach { viewModel ->
-            //显示弹窗
-            viewModel.loadingChange.showDialog.observeInFragment(this) {
-                showLoading(it)
-            }
-            //关闭弹窗
-            viewModel.loadingChange.dismissDialog.observeInFragment(this) {
-                dismissLoading()
+            viewModel.loadingChange.observeInFragment(this) {
+                when (it) {
+                    //显示弹窗
+                    is UILoadingState.Start -> {
+                        showLoading(it.loadMsg)
+                    }
+                    //关闭弹窗
+                    is UILoadingState.End -> {
+                        dismissLoading()
+                    }
+                }
             }
         }
     }

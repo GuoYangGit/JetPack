@@ -1,4 +1,8 @@
-package com.yangguo.base.network
+package com.yangguo.jetpack.mvvm.viewmodel
+
+import com.guoyang.mvvm.base.viewmodel.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /***
  *
@@ -12,18 +16,22 @@ package com.yangguo.base.network
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  *
- * Created by Yang.Guo on 2021/6/5.
+ * Created by Yang.Guo on 2021/6/6.
  */
-sealed class DataUiState<out T> {
-    companion object {
-        fun <T> onStart(loadMsg: String = "", isRefresh: Boolean = true): DataUiState<T> = Start(loadMsg, isRefresh)
-        fun <T> onSuccess(data: T?, isRefresh: Boolean = true): DataUiState<T> = Success(data, isRefresh)
-        fun <T> onError(error: Throwable, isRefresh: Boolean = true): DataUiState<T> = Error(error, isRefresh)
-    }
+@HiltViewModel
+class WebViewModel @Inject constructor() : BaseViewModel() {
+    //是否收藏
+    var collect = false
 
-    data class Start(val loadMsg: String, val isRefresh: Boolean) : DataUiState<Nothing>()
+    //收藏的Id
+    var articleId = 0
 
-    data class Success<out T>(val data: T?, val isRefresh: Boolean) : DataUiState<T>()
+    //标题
+    var showTitle: String = ""
 
-    data class Error(val error: Throwable, val isRefresh: Boolean) : DataUiState<Nothing>()
+    //文章的网络访问路径
+    var url: String = ""
+
+    //需要收藏的类型 具体参数说明请看 CollectType 枚举类
+    var collectType = 0
 }

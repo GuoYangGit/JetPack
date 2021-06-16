@@ -8,6 +8,7 @@ import com.tencent.bugly.beta.Beta
 import com.yangguo.base.ui.BaseVMActivity
 import com.yangguo.jetpack.R
 import com.yangguo.jetpack.databinding.ActivityMainBinding
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,6 +18,10 @@ class MainActivity : BaseVMActivity<ActivityMainBinding>() {
     override fun layoutId(): Int = R.layout.activity_main
 
     override fun initView(savedInstanceState: Bundle?) {
+        UltimateBarX.with(this)
+            .light(true)
+            .transparent()
+            .applyStatusBar()
         //进入首页检查更新
 //        Beta.checkUpgrade(false, true)
 

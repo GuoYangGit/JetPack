@@ -2,14 +2,15 @@ package com.yangguo.jetpack
 
 import android.app.Application
 import coil.ImageLoader
+import com.guoyang.mvvm.base.BaseApp
 import com.guoyang.mvvm.ext.getProcessName
 import com.guoyang.mvvm.ext.util.mvvmLog
 import com.kingja.loadsir.core.LoadSir
-import com.tencent.bugly.Bugly
 import com.tencent.bugly.crashreport.CrashReport
 import dagger.hilt.android.HiltAndroidApp
 import rxhttp.RxHttpPlugins
 import javax.inject.Inject
+
 
 /***
  * You may think you know what the following code does.
@@ -36,7 +37,7 @@ import javax.inject.Inject
  * QQ:352391291
  */
 @HiltAndroidApp
-class MyApplication : Application() {
+class MyApplication : BaseApp() {
     @Inject
     lateinit var imageLoader: ImageLoader
 
@@ -51,6 +52,9 @@ class MyApplication : Application() {
         mvvmLog = BuildConfig.DEBUG
         rxHttpPlugins.setDebug(BuildConfig.DEBUG)
         loadSir.commit()
+
+        // 在 Application 中配置全局自定义的 LoadMoreView
+//        defLoadMoreView = CustomLoadMoreView()
 
         //初始化Bugly
         initBugly()

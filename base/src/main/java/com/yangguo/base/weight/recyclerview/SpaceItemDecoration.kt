@@ -1,4 +1,4 @@
-package me.hgj.jetpackmvvm.demo.app.weight.recyclerview
+package com.yangguo.base.weight.recyclerview
 
 import android.annotation.SuppressLint
 import android.graphics.Canvas
@@ -10,10 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class SpaceItemDecoration(private val leftRight: Int, private val topBottom: Int,private val firstNeedTop:Boolean = true) : RecyclerView.ItemDecoration() {
-    //leftRight为横向间的距离 topBottom为纵向间距离
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        super.onDraw(c, parent, state)
-    }
 
     @SuppressLint("WrongConstant")
     override fun getItemOffsets(

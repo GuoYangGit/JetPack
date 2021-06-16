@@ -11,6 +11,14 @@
             android:label="MainFragment"
             tools:layout="@layout/fragment_main">
 
+
+        <action
+                android:id="@+id/action_to_webFragment"
+                app:destination="@id/web_fragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -22,6 +30,10 @@
             android:id="@+id/me_fragment"
             android:name="com.yangguo.jetpack.mvvm.ui.MeFragment"
             android:label="MeFragment"
-            tools:layout="@layout/fragment_me"
-        />
+            tools:layout="@layout/fragment_me"/>
+    <fragment
+            android:id="@+id/web_fragment"
+            android:name="com.yangguo.jetpack.mvvm.ui.WebFragment"
+            android:label="WebFragment"
+            tools:layout="@layout/fragment_web"/>
 </navigation>

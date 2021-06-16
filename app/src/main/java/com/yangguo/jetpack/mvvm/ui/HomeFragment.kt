@@ -1,20 +1,26 @@
 package com.yangguo.jetpack.mvvm.ui
 
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.guoyang.mvvm.ext.nav
+import com.guoyang.mvvm.ext.navigateAction
 import com.guoyang.mvvm.ext.util.showToast
 import com.guoyang.mvvm.ext.view.dpi
+import com.guoyang.mvvm.ext.view.setNbOnItemClickListener
 import com.guoyang.mvvm.network.msg
 import com.yangguo.base.ext.init
-import com.yangguo.base.network.DataUiState
+import com.guoyang.mvvm.state.DataUiState
+import com.yangguo.base.ext.initBRVAH
+import com.yangguo.base.ext.observeUi
 import com.yangguo.base.ui.BaseVMFragment
 import com.yangguo.jetpack.R
 import com.yangguo.jetpack.databinding.FragmentHomeBinding
 import com.yangguo.jetpack.mvvm.adapter.ArterialAdapter
 import com.yangguo.jetpack.mvvm.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import me.hgj.jetpackmvvm.demo.app.weight.recyclerview.SpaceItemDecoration
+import com.yangguo.base.weight.recyclerview.SpaceItemDecoration
 
 /***
  *
@@ -42,22 +48,31 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
     override fun layoutId(): Int = R.layout.fragment_home
 
     override fun initView(savedInstanceState: Bundle?) {
-        binding.recyclerView.init(LinearLayoutManager(context), adapter).run {
+        binding.recyclerView.initBRVAH(LinearLayoutManager(context), adapter, loadMoreListener = {
+            viewModel.getArterialList(false)
+        }).run {
             addItemDecoration(SpaceItemDecoration(0, 8 * dpi, false))
         }
         binding.swipeRefresh.init {
             viewModel.getArterialList(true)
         }
+        adapter.run {
+            setNbOnItemClickListener { adapter, _, position ->
+                nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {
+                    putParcelable(
+                        "articleData",
+                        adapter.data[position] as Parcelable?
+                    )
+                })
+            }
+        }
     }
 
     override fun initData() {
-        viewModel.arterialList.observe(this) {
+        viewModel.getArterialList(true)
+        viewModel.arterialList.observeUi(this, {
             when (it) {
-                is DataUiState.Start -> {
-                    binding.swipeRefresh.isRefreshing = true
-                }
                 is DataUiState.Success -> {
-                    binding.swipeRefresh.isRefreshing = false
                     if (it.isRefresh) {
                         adapter.setDiffNewData(it.data?.toMutableList())
                     } else if (!it.data.isNullOrEmpty()) {
@@ -65,10 +80,11 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
                     }
                 }
                 is DataUiState.Error -> {
-                    binding.swipeRefresh.isRefreshing = false
                     showToast(it.error.msg)
                 }
+                else -> {
+                }
             }
-        }
+        }, binding.swipeRefresh, adapter)
     }
 }

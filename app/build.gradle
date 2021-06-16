@@ -30,6 +30,9 @@ dependencies {
     //底部bottomBar
     implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.4'
 
+    //透明状态栏
+    implementation 'com.zackratos.ultimatebarx:ultimatebarx:0.6.0'
+
     //项目核心框架
     implementation project(path: ':base')
 }

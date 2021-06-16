@@ -1,5 +1,6 @@
 package com.yangguo.jetpack.mvvm.vo
 
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -19,98 +20,100 @@ import kotlinx.parcelize.Parcelize
  *
  * Created by Yang.Guo on 2021/6/2.
  */
+@SuppressLint("ParcelCreator")
+@Parcelize
 data class ArterialBean(
     @SerializedName("curPage")
-    val curPage: Int?,
+    val curPage: Int = 0,
     @SerializedName("datas")
-    val datas: List<Data>?,
+    val datas: List<Data> = listOf(),
     @SerializedName("offset")
-    val offset: Int?,
+    val offset: Int = 0,
     @SerializedName("over")
-    val over: Boolean?,
+    val over: Boolean = false,
     @SerializedName("pageCount")
-    val pageCount: Int?,
+    val pageCount: Int = 0,
     @SerializedName("size")
-    val size: Int?,
+    val size: Int = 0,
     @SerializedName("total")
-    val total: Int?
-) {
-
+    val total: Int = 0
+) : Parcelable {
     @Parcelize
     data class Data(
         @SerializedName("apkLink")
-        val apkLink: String?,
+        val apkLink: String = "",
         @SerializedName("audit")
-        val audit: Int?,
+        val audit: Int = 0,
         @SerializedName("author")
-        val author: String?,
+        val author: String = "",
         @SerializedName("canEdit")
-        val canEdit: Boolean?,
+        val canEdit: Boolean = false,
         @SerializedName("chapterId")
-        val chapterId: Int?,
+        val chapterId: Int = 0,
         @SerializedName("chapterName")
-        val chapterName: String?,
+        val chapterName: String = "",
         @SerializedName("collect")
-        val collect: Boolean?,
+        val collect: Boolean = false,
         @SerializedName("courseId")
-        val courseId: Int?,
+        val courseId: Int = 0,
         @SerializedName("desc")
-        val desc: String?,
+        val desc: String = "",
         @SerializedName("descMd")
-        val descMd: String?,
+        val descMd: String = "",
         @SerializedName("envelopePic")
-        var envelopePic: String?,
+        val envelopePic: String = "",
         @SerializedName("fresh")
-        val fresh: Boolean?,
+        val fresh: Boolean = false,
         @SerializedName("host")
-        val host: String?,
+        val host: String = "",
         @SerializedName("id")
-        val id: Int?,
+        val id: Int = 0,
         @SerializedName("link")
-        val link: String?,
+        val link: String = "",
         @SerializedName("niceDate")
-        val niceDate: String?,
+        val niceDate: String = "",
         @SerializedName("niceShareDate")
-        val niceShareDate: String?,
+        val niceShareDate: String = "",
         @SerializedName("origin")
-        val origin: String?,
+        val origin: String = "",
         @SerializedName("prefix")
-        val prefix: String?,
+        val prefix: String = "",
         @SerializedName("projectLink")
-        val projectLink: String?,
+        val projectLink: String = "",
         @SerializedName("publishTime")
-        val publishTime: Long?,
+        val publishTime: Long = 0,
         @SerializedName("realSuperChapterId")
-        val realSuperChapterId: Int?,
+        val realSuperChapterId: Int = 0,
         @SerializedName("selfVisible")
-        val selfVisible: Int?,
+        val selfVisible: Int = 0,
         @SerializedName("shareDate")
-        val shareDate: Long?,
+        val shareDate: Long = 0,
         @SerializedName("shareUser")
-        val shareUser: String?,
+        val shareUser: String = "",
         @SerializedName("superChapterId")
-        val superChapterId: Int?,
+        val superChapterId: Int = 0,
         @SerializedName("superChapterName")
-        val superChapterName: String?,
+        val superChapterName: String = "",
         @SerializedName("tags")
-        val tags: List<Tag>?,
+        val tags: List<Tag> = listOf(),
         @SerializedName("title")
-        val title: String?,
+        val title: String = "",
         @SerializedName("type")
-        val type: Int?,
+        val type: Int = 0,
         @SerializedName("userId")
-        val userId: Int?,
+        val userId: Int = 0,
         @SerializedName("visible")
-        val visible: Int?,
+        val visible: Int = 0,
         @SerializedName("zan")
-        val zan: Int?
+        val zan: Int = 0
     ) : Parcelable {
         @Parcelize
         data class Tag(
             @SerializedName("name")
-            val name: String?,
+            val name: String = "",
+
             @SerializedName("url")
-            val url: String?
+            val url: String = ""
         ) : Parcelable
     }
 }
