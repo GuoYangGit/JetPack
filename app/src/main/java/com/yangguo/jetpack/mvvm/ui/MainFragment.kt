@@ -7,7 +7,6 @@ import com.guoyang.mvvm.ext.util.logD
 import com.yangguo.base.ui.BaseVMFragment
 import com.yangguo.jetpack.R
 import com.yangguo.jetpack.databinding.FragmentMainBinding
-import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import dagger.hilt.android.AndroidEntryPoint
 

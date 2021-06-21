@@ -10,10 +10,10 @@ import com.guoyang.mvvm.ext.util.showToast
 import com.guoyang.mvvm.ext.view.dpi
 import com.guoyang.mvvm.ext.view.setNbOnItemClickListener
 import com.guoyang.mvvm.network.msg
-import com.yangguo.base.ext.init
 import com.guoyang.mvvm.state.DataUiState
-import com.yangguo.base.ext.initBRVAH
-import com.yangguo.base.ext.observeUi
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
+import com.yangguo.base.ext.*
 import com.yangguo.base.ui.BaseVMFragment
 import com.yangguo.jetpack.R
 import com.yangguo.jetpack.databinding.FragmentHomeBinding
@@ -42,6 +42,8 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
 
     private val viewModel: HomeViewModel by viewModels()
 
+    private var loadService: LoadService<*>? = null
+
     private val adapter: ArterialAdapter by lazy {
         ArterialAdapter(showTag = true)
     }
@@ -59,7 +61,7 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
             }).run {
                 addItemDecoration(SpaceItemDecoration(0, 8 * dpi))
             }
-            swipeRefresh.init {
+            loadService = swipeRefresh.initLoadService {
                 viewModel.getArterialList(true)
             }
         }
@@ -95,6 +97,6 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
                 else -> {
                 }
             }
-        }, binding.swipeRefresh, adapter)
+        }, binding.swipeRefresh, adapter, loadService)
     }
 }

@@ -40,7 +40,10 @@ class ArterialAdapter(data: MutableList<ArterialBean.Data> = mutableListOf(), pr
     }
 
     override fun convert(holder: BaseDataBindingHolder<ItemProjectBinding>, item: ArterialBean.Data) {
-        holder.dataBinding?.bean = item
-        holder.dataBinding?.showTag = showTag
+        holder.dataBinding?.run {
+            bean = item
+            showTag = showTag
+            executePendingBindings()
+        }
     }
 }

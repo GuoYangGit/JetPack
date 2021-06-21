@@ -17,8 +17,8 @@ android {
         multiDexEnabled true
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
 }
 

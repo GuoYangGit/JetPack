@@ -8,4 +8,5 @@
     <string name="top_text">置顶</string>
     <string name="new_text">新</string>
     <string name="qa_text">问答</string>
+    <string name="selector_picture">选择图片</string>
 </resources>

@@ -69,6 +69,6 @@ class AppModule {
             .addCallback(LoadingCallback())//加载
             .addCallback(ErrorCallback())//错误
             .addCallback(EmptyCallback())//空
-            .setDefaultCallback(SuccessCallback::class.java)//设置默认加载状态页
+            .setDefaultCallback(LoadingCallback::class.java)//设置默认加载状态页
     }
 }

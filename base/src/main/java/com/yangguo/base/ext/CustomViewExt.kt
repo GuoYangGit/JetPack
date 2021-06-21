@@ -11,7 +11,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.guoyang.mvvm.base.appContext
+import com.guoyang.mvvm.ext.util.getCompatColor
 import com.guoyang.mvvm.state.DataUiState
+import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.yangguo.base.R
@@ -76,7 +78,6 @@ fun View.loadServiceInit(callback: () -> Unit): LoadService<Any> {
         //点击重试时触发的操作
         callback.invoke()
     }
-    loadService.showSuccess()
     SettingUtil.setLoadingColor(SettingUtil.getColor(appContext), loadService)
     return loadService
 }
@@ -113,6 +114,11 @@ fun RecyclerView.init(
     return this
 }
 
+fun SwipeRefreshLayout.initLoadService(onRefreshListener: () -> Unit): LoadService<Any> {
+    init(onRefreshListener)
+    return loadServiceInit(onRefreshListener)
+}
+
 /**
  * 初始化 SwipeRefreshLayout
  */
@@ -131,6 +137,7 @@ fun SwipeRefreshLayout.init(onRefreshListener: () -> Unit) {
  */
 fun Toolbar.init(titleStr: String = ""): Toolbar {
     setBackgroundColor(SettingUtil.getColor(appContext))
+    setTitleTextColor(appContext.getCompatColor(R.color.white))
     title = titleStr
     return this
 }
@@ -155,32 +162,39 @@ fun <T> MutableLiveData<DataUiState<T>>.observeUi(
     observer: (DataUiState<T>) -> Unit,
     swipeRefreshLayout: SwipeRefreshLayout? = null,
     adapter: BaseQuickAdapter<*, *>? = null,
+    loadService: LoadService<*>? = null
 ) {
     observe(owner) {
         val isLoadMore = adapter is LoadMoreModule
         when (it) {
             is DataUiState.Start -> {
-                if (it.isRefresh || !isLoadMore)
+                if (it.isRefresh) {
                     swipeRefreshLayout?.isRefreshing = true
+                    if (loadService?.currentCallback != SuccessCallback::class.java){
+                        loadService?.showLoading()
+                    }
+                }
             }
             is DataUiState.Success -> {
                 when {
-                    it.isRefresh || !isLoadMore -> {
+                    it.isRefresh -> {
                         swipeRefreshLayout?.isRefreshing = false
+                        loadService?.showSuccess()
                     }
-                    it.data != null -> {
+                    isLoadMore -> {
                         adapter?.loadMoreModule?.loadMoreComplete()
-                    }
-                    else -> {
-                        adapter?.loadMoreModule?.loadMoreEnd()
                     }
                 }
             }
             is DataUiState.Error -> {
-                if (it.isRefresh || !isLoadMore) {
-                    swipeRefreshLayout?.isRefreshing = false
-                } else {
-                    adapter?.loadMoreModule?.loadMoreFail()
+                when {
+                    it.isRefresh -> {
+                        swipeRefreshLayout?.isRefreshing = false
+                        loadService?.showError(it.error.message ?: "")
+                    }
+                    isLoadMore -> {
+                        adapter?.loadMoreModule?.loadMoreFail()
+                    }
                 }
             }
         }
