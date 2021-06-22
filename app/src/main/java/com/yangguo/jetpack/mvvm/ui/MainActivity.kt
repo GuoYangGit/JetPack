@@ -22,7 +22,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         UltimateBarX.with(this)
-            .light(false)
+            .light(true)
             .transparent()
             .apply {
                 applyStatusBar()

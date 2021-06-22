@@ -59,7 +59,7 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
             recyclerView.initBRVAH(LinearLayoutManager(context), adapter, loadMoreListener = {
                 viewModel.getArterialList(false)
             }).run {
-                addItemDecoration(SpaceItemDecoration(0, 8 * dpi))
+                addItemDecoration(SpaceItemDecoration(0, 8 * dpi, true))
             }
             loadService = swipeRefresh.initLoadService {
                 viewModel.getArterialList(true)

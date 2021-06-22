@@ -35,7 +35,9 @@ class MeFragment : BaseVMFragment<FragmentMeBinding>() {
             pictureBtn.setOnClickListener {
                 PictureSelector.create(this@MeFragment)
                     .openGallery(PictureMimeType.ofAll())
+                    .theme(R.style.picture_white_style)
                     .imageEngine(CoilEngine)
+                    .isEnableCrop(true)
                     .forResult(object : OnResultCallbackListener<LocalMedia?> {
                         override fun onResult(result: List<LocalMedia?>) {
                             // 结果回调

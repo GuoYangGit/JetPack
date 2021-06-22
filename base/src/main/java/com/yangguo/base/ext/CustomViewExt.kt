@@ -137,7 +137,7 @@ fun SwipeRefreshLayout.init(onRefreshListener: () -> Unit) {
  */
 fun Toolbar.init(titleStr: String = ""): Toolbar {
     setBackgroundColor(SettingUtil.getColor(appContext))
-    setTitleTextColor(appContext.getCompatColor(R.color.white))
+//    setTitleTextColor(appContext.getCompatColor(R.color.white))
     title = titleStr
     return this
 }
@@ -147,7 +147,7 @@ fun Toolbar.init(titleStr: String = ""): Toolbar {
  */
 fun Toolbar.initClose(
     titleStr: String = "",
-    backImg: Int = R.drawable.ic_back,
+    backImg: Int = R.mipmap.ic_back,
     onBack: (toolbar: Toolbar) -> Unit
 ): Toolbar {
     init(titleStr)

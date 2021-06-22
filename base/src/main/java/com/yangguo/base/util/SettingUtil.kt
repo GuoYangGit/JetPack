@@ -19,7 +19,7 @@ object SettingUtil {
     /**
      * 获取当前主题颜色
      */
-    fun getColor(context: Context): Int = context.getCompatColor(R.color.purple_200)
+    fun getColor(context: Context): Int = context.getCompatColor(R.color.colorPrimary)
 
     private fun getOneColorStateList(color: Int): ColorStateList {
         val colors = intArrayOf(color)

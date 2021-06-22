@@ -1,12 +1,13 @@
 package com.yangguo.jetpack
 
-import android.app.Application
 import coil.ImageLoader
+import com.chad.library.adapter.base.module.LoadMoreModuleConfig.defLoadMoreView
 import com.guoyang.mvvm.base.BaseApp
 import com.guoyang.mvvm.ext.getProcessName
 import com.guoyang.mvvm.ext.util.mvvmLog
 import com.kingja.loadsir.core.LoadSir
 import com.tencent.bugly.crashreport.CrashReport
+import com.yangguo.base.weight.recyclerview.CustomLoadMoreView
 import dagger.hilt.android.HiltAndroidApp
 import rxhttp.RxHttpPlugins
 import javax.inject.Inject
@@ -54,7 +55,7 @@ class MyApplication : BaseApp() {
         loadSir.commit()
 
         // 在 Application 中配置全局自定义的 LoadMoreView
-//        defLoadMoreView = CustomLoadMoreView()
+        defLoadMoreView = CustomLoadMoreView()
 
         //初始化Bugly
         initBugly()
