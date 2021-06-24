@@ -22,7 +22,7 @@ import com.yangguo.jetpack.mvvm.vo.ArterialBean
  *
  * Created by Yang.Guo on 2021/6/5.
  */
-class ArterialAdapter(data: MutableList<ArterialBean.Data> = mutableListOf(), private val showTag: Boolean = false) :
+class ArterialAdapter(data: MutableList<ArterialBean.Data> = mutableListOf(), private val showTag: Boolean = true) :
     BaseQuickAdapter<ArterialBean.Data, BaseDataBindingHolder<ItemProjectBinding>>(R.layout.item_project, data),
     LoadMoreModule {
 
@@ -42,8 +42,8 @@ class ArterialAdapter(data: MutableList<ArterialBean.Data> = mutableListOf(), pr
     override fun convert(holder: BaseDataBindingHolder<ItemProjectBinding>, item: ArterialBean.Data) {
         holder.dataBinding?.run {
             bean = item
-            showTag = showTag
-            executePendingBindings()
+            showTag = this@ArterialAdapter.showTag
+//            executePendingBindings()
         }
     }
 }

@@ -32,6 +32,11 @@ dependencies {
 
     //图片选择https://github.com/LuckSiege/PictureSelector/blob/master/README_CN.md
     api 'io.github.lucksiege:pictureselector:v2.7.3-rc03'
+    //轮播图
+    api 'com.github.zhpanvip:BannerViewPager:3.5.2'
+    //TabLayout
+    api 'com.github.hackware1993:MagicIndicator:1.7.0'
+
 
     //Bugly
     api 'com.tencent.bugly:crashreport_upgrade:1.4.5'

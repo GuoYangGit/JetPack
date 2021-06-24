@@ -42,6 +42,9 @@ class MainFragment : BaseVMFragment<FragmentMainBinding>() {
                             0 -> {
                                 HomeFragment()
                             }
+                            1 -> {
+                                ProjectFragment()
+                            }
                             else -> {
                                 MeFragment()
                             }

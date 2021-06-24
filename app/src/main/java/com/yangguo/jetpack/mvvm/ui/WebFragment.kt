@@ -11,6 +11,7 @@ import com.yangguo.jetpack.R
 import com.yangguo.jetpack.databinding.FragmentWebBinding
 import com.yangguo.jetpack.mvvm.viewmodel.WebViewModel
 import com.yangguo.jetpack.mvvm.vo.ArterialBean
+import com.yangguo.jetpack.mvvm.vo.BannerBean
 import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +49,15 @@ class WebFragment : BaseVMFragment<FragmentWebBinding>() {
                 viewModel.collect = it.collect
                 viewModel.url = it.link
 //                viewModel.collectType = CollectType.Ariticle.type
+            }
+            //点击首页轮播图进来的
+            getParcelable<BannerBean>("bannerdata")?.let {
+                viewModel.articleId = it.id
+                viewModel.showTitle = it.title
+                //从首页轮播图 没法判断是否已经收藏过，所以直接默认没有收藏
+                viewModel.collect = false
+                viewModel.url = it.url
+//                viewModel.collectType = CollectType.Url.type
             }
         }
         binding.run {

@@ -22,17 +22,22 @@ import com.guoyang.mvvm.ext.util.toHtml
  * Created by Yang.Guo on 2021/6/5.
  */
 
-@BindingAdapter("bind:isVisible")
-fun View.isVisible(isVisible: Boolean?) {
-    visibility = if (isVisible == true) View.VISIBLE else View.GONE
-}
+object BindingAdapterExt {
+    @JvmStatic
+    @BindingAdapter("isVisible")
+    fun isVisible(view: View, isVisible: Boolean?) {
+        view.visibility = if (isVisible == true) View.VISIBLE else View.GONE
+    }
 
-@BindingAdapter("bind:html")
-fun TextView.toHtml(html: String?) {
-    text = html?.toHtml()
-}
+    @JvmStatic
+    @BindingAdapter("html")
+    fun toHtml(textView: TextView, html: String?) {
+        textView.text = html?.toHtml()
+    }
 
-@BindingAdapter("bind:loadUrl")
-fun ImageView.loadUrl(url: String?) {
-    load(url)
+    @JvmStatic
+    @BindingAdapter("loadUrl")
+    fun loadUrl(imageView: ImageView, url: String?) {
+        imageView.load(url)
+    }
 }

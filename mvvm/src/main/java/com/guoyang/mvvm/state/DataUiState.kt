@@ -16,9 +16,14 @@ package com.guoyang.mvvm.state
  */
 sealed class DataUiState<out T> {
     companion object {
-        fun <T> onStart(loadMsg: String = "", isRefresh: Boolean = true): DataUiState<T> = Start(loadMsg, isRefresh)
-        fun <T> onSuccess(data: T?, isRefresh: Boolean = true): DataUiState<T> = Success(data, isRefresh)
-        fun <T> onError(error: Throwable, isRefresh: Boolean = true): DataUiState<T> = Error(error, isRefresh)
+        fun <T> onStart(loadMsg: String = "", isRefresh: Boolean = true): DataUiState<T> =
+            Start(loadMsg, isRefresh)
+
+        fun <T> onSuccess(data: T?, isRefresh: Boolean = true): DataUiState<T> =
+            Success(data, isRefresh)
+
+        fun <T> onError(error: Throwable, isRefresh: Boolean = true): DataUiState<T> =
+            Error(error, isRefresh)
     }
 
     data class Start(val loadMsg: String, val isRefresh: Boolean) : DataUiState<Nothing>()

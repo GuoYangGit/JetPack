@@ -1,6 +1,8 @@
 package com.yangguo.jetpack
 
+import coil.Coil
 import coil.ImageLoader
+import coil.util.CoilUtils
 import com.chad.library.adapter.base.module.LoadMoreModuleConfig.defLoadMoreView
 import com.guoyang.mvvm.base.BaseApp
 import com.guoyang.mvvm.ext.getProcessName
@@ -9,6 +11,7 @@ import com.kingja.loadsir.core.LoadSir
 import com.tencent.bugly.crashreport.CrashReport
 import com.yangguo.base.weight.recyclerview.CustomLoadMoreView
 import dagger.hilt.android.HiltAndroidApp
+import okhttp3.OkHttpClient
 import rxhttp.RxHttpPlugins
 import javax.inject.Inject
 
@@ -56,6 +59,17 @@ class MyApplication : BaseApp() {
 
         // 在 Application 中配置全局自定义的 LoadMoreView
         defLoadMoreView = CustomLoadMoreView()
+
+        val imageLoader = ImageLoader.Builder(applicationContext)
+            .availableMemoryPercentage(0.25)
+            .crossfade(true)
+            .okHttpClient {
+                OkHttpClient.Builder()
+                    .cache(CoilUtils.createDefaultCache(applicationContext))
+                    .build()
+            }
+            .build()
+        Coil.setImageLoader(imageLoader)
 
         //初始化Bugly
         initBugly()

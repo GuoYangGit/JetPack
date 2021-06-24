@@ -1,26 +1,40 @@
 package com.yangguo.base.ext
 
+import android.content.Context
+import android.graphics.Color
 import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.guoyang.mvvm.base.appContext
 import com.guoyang.mvvm.ext.util.getCompatColor
+import com.guoyang.mvvm.ext.util.toHtml
 import com.guoyang.mvvm.state.DataUiState
 import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.yangguo.base.R
 import com.yangguo.base.util.SettingUtil
+import com.yangguo.base.weight.ScaleTransitionPagerTitleView
 import com.yangguo.base.weight.loadcallback.EmptyCallback
 import com.yangguo.base.weight.loadcallback.ErrorCallback
 import com.yangguo.base.weight.loadcallback.LoadingCallback
+import net.lucode.hackware.magicindicator.MagicIndicator
+import net.lucode.hackware.magicindicator.buildins.UIUtil
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 
 /***
  *
@@ -156,6 +170,75 @@ fun Toolbar.initClose(
     return this
 }
 
+fun MagicIndicator.bindViewPager2(
+    viewPager: ViewPager2,
+    mStringList: List<String> = arrayListOf(),
+    action: (index: Int) -> Unit = {}
+) {
+    val commonNavigator = CommonNavigator(appContext)
+    commonNavigator.adapter = object : CommonNavigatorAdapter() {
+
+        override fun getCount(): Int {
+            return mStringList.size
+        }
+
+        override fun getTitleView(context: Context, index: Int): IPagerTitleView {
+            return ScaleTransitionPagerTitleView(appContext).apply {
+                //设置文本
+                text = mStringList[index].toHtml()
+                //字体大小
+                textSize = 17f
+                //未选中颜色
+                normalColor = Color.WHITE
+                //选中颜色
+                selectedColor = Color.WHITE
+                //点击事件
+                setOnClickListener {
+                    viewPager.currentItem = index
+                    action.invoke(index)
+                }
+            }
+        }
+
+        override fun getIndicator(context: Context): IPagerIndicator {
+            return LinePagerIndicator(context).apply {
+                mode = LinePagerIndicator.MODE_EXACTLY
+                //线条的宽高度
+                lineHeight = UIUtil.dip2px(appContext, 3.0).toFloat()
+                lineWidth = UIUtil.dip2px(appContext, 30.0).toFloat()
+                //线条的圆角
+                roundRadius = UIUtil.dip2px(appContext, 6.0).toFloat()
+                startInterpolator = AccelerateInterpolator()
+                endInterpolator = DecelerateInterpolator(2.0f)
+                //线条的颜色
+                setColors(Color.WHITE)
+            }
+        }
+    }
+    this.navigator = commonNavigator
+
+    viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            this@bindViewPager2.onPageSelected(position)
+            action.invoke(position)
+        }
+
+        override fun onPageScrolled(
+            position: Int,
+            positionOffset: Float,
+            positionOffsetPixels: Int
+        ) {
+            super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+            this@bindViewPager2.onPageScrolled(position, positionOffset, positionOffsetPixels)
+        }
+
+        override fun onPageScrollStateChanged(state: Int) {
+            super.onPageScrollStateChanged(state)
+            this@bindViewPager2.onPageScrollStateChanged(state)
+        }
+    })
+}
 
 fun <T> MutableLiveData<DataUiState<T>>.observeUi(
     owner: LifecycleOwner,
@@ -170,7 +253,7 @@ fun <T> MutableLiveData<DataUiState<T>>.observeUi(
             is DataUiState.Start -> {
                 if (it.isRefresh) {
                     swipeRefreshLayout?.isRefreshing = true
-                    if (loadService?.currentCallback != SuccessCallback::class.java){
+                    if (loadService?.currentCallback != SuccessCallback::class.java) {
                         loadService?.showLoading()
                     }
                 }
