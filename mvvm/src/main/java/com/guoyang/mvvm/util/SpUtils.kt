@@ -5,23 +5,14 @@ import com.tencent.mmkv.MMKV
 
 /***
  *
- *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
- * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
- * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
- * ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
- * ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
- *  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
- *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
- *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
- *           ░     ░ ░      ░  ░
- *
- * Created by Yang.Guo on 2021/6/1.
+ * MVVM工具类
+ * @author Yang.Guo on 2021/6/1.
  */
 object SpUtils {
     private const val defaultMapID: String = "app"
 
     fun init(context: Context, pathName: String = "/mmkv") {
-        val root = context.filesDir.absolutePath + "/mmkv"
+        val root = context.filesDir.absolutePath + pathName
         MMKV.initialize(root)
     }
 
@@ -57,7 +48,7 @@ object SpUtils {
 
     fun getString(key: String, defaultValue: String = "", mmapID: String = defaultMapID): String {
         val kv = MMKV.mmkvWithID(mmapID)
-        return kv.decodeString(key, defaultValue)
+        return kv.decodeString(key, defaultValue) ?: defaultValue
     }
 
     fun getInt(key: String, defaultValue: Int = 0, mmapID: String = defaultMapID): Int {
@@ -65,7 +56,11 @@ object SpUtils {
         return kv.decodeInt(key, defaultValue)
     }
 
-    fun getBoolean(key: String, defaultValue: Boolean = false, mmapID: String = defaultMapID): Boolean {
+    fun getBoolean(
+        key: String,
+        defaultValue: Boolean = false,
+        mmapID: String = defaultMapID
+    ): Boolean {
         val kv = MMKV.mmkvWithID(mmapID)
         return kv.decodeBool(key, defaultValue)
     }

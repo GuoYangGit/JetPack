@@ -31,13 +31,21 @@ class CharacterHandler private constructor() {
                 Pattern.UNICODE_CASE or Pattern.CASE_INSENSITIVE
             )
 
-            override fun filter(source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int,dend: Int): CharSequence? {
+            override fun filter(
+                source: CharSequence,
+                start: Int,
+                end: Int,
+                dest: Spanned,
+                dstart: Int,
+                dend: Int
+            ): CharSequence? {
                 val emojiMatcher = emoji.matcher(source)
                 return if (emojiMatcher.find()) {
                     ""
                 } else null
             }
         }
+
         /**
          * json 格式化
          *
@@ -81,8 +89,7 @@ class CharacterHandler private constructor() {
             if (TextUtils.isEmpty(xml)) {
                 return "Empty/Null xml content"
             }
-            val message: String?
-            message = try {
+            val message: String? = try {
                 val xmlInput: Source =
                     StreamSource(StringReader(xml))
                 val xmlOutput =

@@ -5,7 +5,7 @@ import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import com.guoyang.mvvm.ext.nav
 import com.just.agentweb.AgentWeb
-import com.yangguo.base.ext.initClose
+import com.yangguo.base.ext.view.bind
 import com.yangguo.base.ui.BaseVMFragment
 import com.yangguo.jetpack.R
 import com.yangguo.jetpack.databinding.FragmentWebBinding
@@ -34,8 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class WebFragment : BaseVMFragment<FragmentWebBinding>() {
     private var mAgentWeb: AgentWeb? = null
 
-    private var preWeb: AgentWeb.PreAgentWeb? = null
-
     private val viewModel: WebViewModel by viewModels()
 
     override fun layoutId(): Int = R.layout.fragment_web
@@ -60,9 +58,9 @@ class WebFragment : BaseVMFragment<FragmentWebBinding>() {
 //                viewModel.collectType = CollectType.Url.type
             }
         }
-        binding.run {
+        binding?.run {
             toolBar.run {
-                initClose(viewModel.showTitle, onBack = {
+                bind(viewModel.showTitle, onBack = {
                     nav().navigateUp()
                 })
                 addStatusBarTopPadding()
@@ -70,17 +68,12 @@ class WebFragment : BaseVMFragment<FragmentWebBinding>() {
             navigationBar.run {
                 addNavigationBarBottomPadding()
             }
+            mAgentWeb = AgentWeb.with(this@WebFragment)
+                .setAgentWebParent(webLayout, FrameLayout.LayoutParams(-1, -1))
+                .useDefaultIndicator()
+                .createAgentWeb()
+                .go(viewModel.url)
         }
-        preWeb = AgentWeb.with(this)
-            .setAgentWebParent(binding.webLayout, FrameLayout.LayoutParams(-1, -1))
-            .useDefaultIndicator()
-            .createAgentWeb()
-            .ready()
-    }
-
-    override fun lazyLoadData() {
-        //加载网页
-        mAgentWeb = preWeb?.go(viewModel.url)
     }
 
     override fun onPause() {

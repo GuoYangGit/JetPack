@@ -22,9 +22,9 @@ class SpaceItemDecoration(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        val layoutManager = parent.layoutManager as LinearLayoutManager?
+        val layoutManager = parent.layoutManager as? LinearLayoutManager ?: return
         //竖直方向的
-        if (layoutManager!!.orientation == LinearLayoutManager.VERTICAL) {
+        if (layoutManager.orientation == LinearLayoutManager.VERTICAL) {
             //最后一项需要 bottom
             if (parent.getChildAdapterPosition(view) == layoutManager.itemCount - 1) {
                 outRect.bottom = topBottom

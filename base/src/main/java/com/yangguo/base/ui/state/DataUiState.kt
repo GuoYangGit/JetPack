@@ -1,9 +1,4 @@
-package com.guoyang.mvvm.ext.lifecycle
-
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.OnLifecycleEvent
+package com.yangguo.base.ui.state
 
 /***
  *
@@ -17,18 +12,23 @@ import androidx.lifecycle.OnLifecycleEvent
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  *
- * Created by Yang.Guo on 2021/5/31.
+ * Created by Yang.Guo on 2021/6/5.
  */
-object KtxAppLifeObserver : LifecycleObserver {
-    var isForeground = MutableLiveData<Boolean>()
+sealed class DataUiState<out T>(val refresh: Boolean) {
+    companion object {
+        fun <T> onStart(loadMsg: String = "", isRefresh: Boolean = true): DataUiState<T> =
+            Start(loadMsg, isRefresh)
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    private fun onForeground() {
-        isForeground.value = true
+        fun <T> onSuccess(data: T?, isRefresh: Boolean = true): DataUiState<T> =
+            Success(data, isRefresh)
+
+        fun <T> onError(error: Throwable, isRefresh: Boolean = true): DataUiState<T> =
+            Error(error, isRefresh)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    private fun obBackground() {
-        isForeground.value = false
-    }
+    data class Start(val loadMsg: String, val isRefresh: Boolean) : DataUiState<Nothing>(isRefresh)
+
+    data class Success<out T>(val data: T?, val isRefresh: Boolean) : DataUiState<T>(isRefresh)
+
+    data class Error(val error: Throwable, val isRefresh: Boolean) : DataUiState<Nothing>(isRefresh)
 }

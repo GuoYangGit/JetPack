@@ -26,23 +26,16 @@ import java.io.IOException
  * @return 进程名
  */
 fun getProcessName(pid: Int): String? {
-    var reader: BufferedReader? = null
     try {
-        reader = BufferedReader(FileReader("/proc/$pid/cmdline"))
-        var processName = reader.readLine()
-        if (!TextUtils.isEmpty(processName)) {
-            processName = processName.trim { it <= ' ' }
+        BufferedReader(FileReader("/proc/$pid/cmdline")).use { reader ->
+            var processName = reader.readLine()
+            if (processName.isNotEmpty()) {
+                processName = processName.trim { it <= ' ' }
+            }
+            return processName
         }
-        return processName
-    } catch (throwable: Throwable) {
-        throwable.printStackTrace()
-    } finally {
-        try {
-            reader?.close()
-        } catch (exception: IOException) {
-            exception.printStackTrace()
-        }
-
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return null
     }
-    return null
 }

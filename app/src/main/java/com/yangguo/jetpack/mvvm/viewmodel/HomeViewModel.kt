@@ -2,8 +2,8 @@ package com.yangguo.jetpack.mvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.guoyang.mvvm.base.viewmodel.BaseViewModel
-import com.guoyang.mvvm.ext.requestWithUiDataState
-import com.guoyang.mvvm.state.DataUiState
+import com.yangguo.base.ui.state.DataUiState
+import com.yangguo.base.ext.bindUiState
 import com.yangguo.jetpack.mvvm.model.MainRepository
 import com.yangguo.jetpack.mvvm.vo.ArterialBean
 import com.yangguo.jetpack.mvvm.vo.BannerBean
@@ -36,16 +36,17 @@ class HomeViewModel @Inject constructor(
     var page: Int = 0
 
     fun getArterialList(isRefresh: Boolean) {
-        requestWithUiDataState(arterialList, {
-            if (isRefresh) page = 0 else page += 1
-            val result = mainRepository.getArterialList(page)
-            return@requestWithUiDataState result.datas
-        }, isRefresh)
+        if (isRefresh) {
+            page = 0
+        } else {
+            page++
+        }
+        mainRepository.getArterialList(page)
+            .bindUiState(arterialList, this, isRefresh)
     }
 
     fun getBannerList() {
-        requestWithUiDataState(bannerData, {
-            return@requestWithUiDataState mainRepository.getBannerList()
-        })
+        mainRepository.getBannerList()
+            .bindUiState(bannerData, this)
     }
 }

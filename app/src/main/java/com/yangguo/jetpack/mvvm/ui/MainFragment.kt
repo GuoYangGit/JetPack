@@ -30,36 +30,31 @@ class MainFragment : BaseVMFragment<FragmentMainBinding>() {
     override fun layoutId(): Int = R.layout.fragment_main
 
     override fun initView(savedInstanceState: Bundle?) {
-        binding.run {
+        binding?.run {
+            // 设置ViewPager
             mainViewpager.run {
-                isUserInputEnabled = false // 设置不可以滑动
-                adapter = object : FragmentStateAdapter(this@MainFragment) {
-                    override fun getItemCount(): Int = 5
-
-                    override fun createFragment(position: Int): Fragment {
-                        "this is createFragment $position".logD(this@MainFragment.toString())
-                        return when (position) {
-                            0 -> {
-                                HomeFragment()
-                            }
-                            1 -> {
-                                ProjectFragment()
-                            }
-                            else -> {
-                                MeFragment()
+                // 设置不可以滑动
+                isUserInputEnabled = false
+                // 设置适配器
+                adapter =
+                    object :
+                        FragmentStateAdapter(childFragmentManager, viewLifecycleOwner.lifecycle) {
+                        override fun getItemCount(): Int = 5
+                        override fun createFragment(position: Int): Fragment {
+                            return when (position) {
+                                0 -> HomeFragment()
+                                1 -> ProjectFragment()
+                                else -> MeFragment()
                             }
                         }
                     }
-                }
             }
-
-            mainBtn.run {
+            // 设置底部导航栏
+            bottomNavigationView.run {
+                // 设置距离底部导航栏的padding
                 addNavigationBarBottomPadding()
-                enableAnimation(true) // 点击动画(默认开启)
-                enableShiftingMode(false) // 导航条位移模式
-                enableItemShiftingMode(true) // 子菜单位移模式
-                setTextSize(12F)
-                setOnNavigationItemSelectedListener {
+                // 设置选中监听
+                setOnItemSelectedListener {
                     when (it.itemId) {
                         R.id.menu_main -> mainViewpager.setCurrentItem(0, false)
                         R.id.menu_project -> mainViewpager.setCurrentItem(1, false)

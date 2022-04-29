@@ -20,8 +20,7 @@ import androidx.fragment.app.Fragment
  * TODO 这里的LoadDialog需要进行实现
  */
 fun AppCompatActivity.showLoadingExt(message: String = "请求网络中") {
-    if (!this.isFinishing) {
-    }
+    if (this.isFinishing) return
 }
 
 /**
@@ -29,8 +28,7 @@ fun AppCompatActivity.showLoadingExt(message: String = "请求网络中") {
  */
 fun Fragment.showLoadingExt(message: String = "请求网络中") {
     activity?.let {
-        if (!it.isFinishing) {
-        }
+        if (it.isFinishing) return@let
     }
 }
 

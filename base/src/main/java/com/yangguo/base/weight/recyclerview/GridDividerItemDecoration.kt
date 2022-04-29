@@ -43,15 +43,19 @@ class GridDividerItemDecoration @JvmOverloads constructor(
         0,
         isNeedSpace,
         false
-    ) {
-    }
+    )
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
         super.getItemOffsets(outRect, view, parent, state)
         var top = 0
-        var left = 0
-        var right = 0
-        var bottom = 0
+        val left: Int
+        val right: Int
+        var bottom: Int
         val itemPosition = (view.layoutParams as RecyclerView.LayoutParams).viewLayoutPosition
         spanCount = getSpanCount(parent)
         val childCount = parent.adapter!!.itemCount
@@ -59,13 +63,20 @@ class GridDividerItemDecoration @JvmOverloads constructor(
         var spaceWidth = 0 //首尾两列与父布局之间的间隔
         if (isNeedSpace) spaceWidth = mDividerWidth
         val eachItemWidth = maxAllDividerWidth / spanCount //每个Item left+right
-        val dividerItemWidth = (maxAllDividerWidth - 2 * spaceWidth) / (spanCount - 1) //item与item之间的距离
+        val dividerItemWidth =
+            (maxAllDividerWidth - 2 * spaceWidth) / (spanCount - 1) //item与item之间的距离
         left = itemPosition % spanCount * (dividerItemWidth - eachItemWidth) + spaceWidth
         right = eachItemWidth - left
         bottom = mDividerWidth
         if (mFirstRowTopMargin > 0 && isFirstRow(parent, itemPosition, spanCount)) //第一行顶部是否需要间隔
             top = mFirstRowTopMargin
-        if (!isLastRowNeedSpace && isLastRow(parent, itemPosition, spanCount, childCount)) { //最后一行是否需要间隔
+        if (!isLastRowNeedSpace && isLastRow(
+                parent,
+                itemPosition,
+                spanCount,
+                childCount
+            )
+        ) { //最后一行是否需要间隔
             bottom = 0
         }
         outRect[left, top, right] = bottom
@@ -82,7 +93,10 @@ class GridDividerItemDecoration @JvmOverloads constructor(
         val itemWidth = view.layoutParams.width
         val itemHeight = view.layoutParams.height
         val screenWidth =
-            Math.min(mContext.resources.displayMetrics.widthPixels, mContext.resources.displayMetrics.heightPixels)
+            Math.min(
+                mContext.resources.displayMetrics.widthPixels,
+                mContext.resources.displayMetrics.heightPixels
+            )
         var maxDividerWidth = screenWidth - itemWidth * spanCount
         if (itemHeight < 0 || itemWidth < 0 || isNeedSpace && maxDividerWidth <= (spanCount - 1) * mDividerWidth) {
             view.layoutParams.width = attachColumnWidth
@@ -132,7 +146,13 @@ class GridDividerItemDecoration @JvmOverloads constructor(
             var top = child.bottom + layoutParams.bottomMargin
             var bottom = top + mDividerWidth
             if (mPaint != null) {
-                canvas.drawRect(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat(), mPaint)
+                canvas.drawRect(
+                    left.toFloat(),
+                    top.toFloat(),
+                    right.toFloat(),
+                    bottom.toFloat(),
+                    mPaint
+                )
             }
             //画垂直分割线
             top = child.top
@@ -140,7 +160,13 @@ class GridDividerItemDecoration @JvmOverloads constructor(
             left = child.right + layoutParams.rightMargin
             right = left + mDividerWidth
             if (mPaint != null) {
-                canvas.drawRect(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat(), mPaint)
+                canvas.drawRect(
+                    left.toFloat(),
+                    top.toFloat(),
+                    right.toFloat(),
+                    bottom.toFloat(),
+                    mPaint
+                )
             }
         }
     }
@@ -201,10 +227,16 @@ class GridDividerItemDecoration @JvmOverloads constructor(
      * @param childCount
      * @return
      */
-    private fun isLastRow(parent: RecyclerView, pos: Int, spanCount: Int, childCount: Int): Boolean {
+    private fun isLastRow(
+        parent: RecyclerView,
+        pos: Int,
+        spanCount: Int,
+        childCount: Int
+    ): Boolean {
         val layoutManager = parent.layoutManager
         if (layoutManager is GridLayoutManager) {
-            val lines = if (childCount % spanCount == 0) childCount / spanCount else childCount / spanCount + 1
+            val lines =
+                if (childCount % spanCount == 0) childCount / spanCount else childCount / spanCount + 1
             return lines == pos / spanCount + 1
         }
         return false

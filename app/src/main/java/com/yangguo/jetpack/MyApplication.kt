@@ -6,7 +6,7 @@ import coil.util.CoilUtils
 import com.chad.library.adapter.base.module.LoadMoreModuleConfig.defLoadMoreView
 import com.guoyang.mvvm.base.BaseApp
 import com.guoyang.mvvm.ext.getProcessName
-import com.guoyang.mvvm.ext.util.mvvmLog
+import com.guoyang.mvvm.ext.util.MVVM_LOG
 import com.kingja.loadsir.core.LoadSir
 import com.tencent.bugly.crashreport.CrashReport
 import com.yangguo.base.weight.recyclerview.CustomLoadMoreView
@@ -53,22 +53,11 @@ class MyApplication : BaseApp() {
 
     override fun onCreate() {
         super.onCreate()
-        mvvmLog = BuildConfig.DEBUG
+        MVVM_LOG = BuildConfig.DEBUG
         rxHttpPlugins.setDebug(BuildConfig.DEBUG)
         loadSir.commit()
-
         // 在 Application 中配置全局自定义的 LoadMoreView
         defLoadMoreView = CustomLoadMoreView()
-
-        val imageLoader = ImageLoader.Builder(applicationContext)
-            .availableMemoryPercentage(0.25)
-            .crossfade(true)
-            .okHttpClient {
-                OkHttpClient.Builder()
-                    .cache(CoilUtils.createDefaultCache(applicationContext))
-                    .build()
-            }
-            .build()
         Coil.setImageLoader(imageLoader)
 
         //初始化Bugly

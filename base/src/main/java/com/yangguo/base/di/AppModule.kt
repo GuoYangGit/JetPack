@@ -9,8 +9,6 @@ import coil.decode.SvgDecoder
 import coil.decode.VideoFrameDecoder
 import coil.fetch.VideoFrameFileFetcher
 import coil.fetch.VideoFrameUriFetcher
-import com.guoyang.mvvm.ext.util.logD
-import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
 import com.yangguo.base.weight.loadcallback.EmptyCallback
 import com.yangguo.base.weight.loadcallback.ErrorCallback
@@ -23,26 +21,20 @@ import javax.inject.Singleton
 
 /***
  *
- *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
- * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
- * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
- * ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
- * ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
- *  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
- *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
- *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
- *           ░     ░ ░      ░  ░
- *
- * Created by Yang.Guo on 2021/6/2.
+ * App通用注入Module
+ * @author Yang.Guo on 2021/6/2.
  */
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
+    /**
+     * 提供ImageLoader
+     * @param appContext Application上下文
+     */
     @Provides
     @Singleton
     fun provideImageLoader(appContext: Application): ImageLoader {
-        "provideImageLoader".logD(this.toString())
         return ImageLoader.Builder(appContext)
             .availableMemoryPercentage(0.25)
             .componentRegistry {
@@ -59,11 +51,14 @@ class AppModule {
             .crossfade(true)
             .build()
     }
-    
-    
+
+
+    /**
+     * 提供LoadSir
+     */
     @Provides
     @Singleton
-    fun provideLoadSirBuild(): LoadSir.Builder{
+    fun provideLoadSirBuild(): LoadSir.Builder {
         //界面加载管理 初始化
         return LoadSir.beginBuilder()
             .addCallback(LoadingCallback())//加载

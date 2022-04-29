@@ -14,22 +14,16 @@ import javax.net.ssl.SSLSession
 
 /***
  *
- *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
- * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
- * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
- * ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
- * ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
- *  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
- *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
- *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
- *           ░     ░ ░      ░  ░
- *
- * Created by Yang.Guo on 2021/6/2.
+ * App通用网络模块
+ * @author Yang.Guo on 2021/6/2.
  */
 @Module
 @InstallIn(SingletonComponent::class)
 class RemoteModule {
 
+    /**
+     * 提供OkHttpClient
+     */
     @Provides
     @Singleton
     fun provideOkhttpClient(): OkHttpClient {
@@ -44,6 +38,10 @@ class RemoteModule {
             .build()
     }
 
+    /**
+     * 提供RxHttp插件
+     * @param okHttpClient OkHttpClient
+     */
     @Provides
     @Singleton
     fun provideRxHttpPlugins(okHttpClient: OkHttpClient): RxHttpPlugins {

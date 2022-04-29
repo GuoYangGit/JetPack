@@ -11,30 +11,18 @@ import java.util.concurrent.TimeoutException
 
 /***
  *
- *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
- * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
- * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
- * ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
- * ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
- *  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
- *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
- *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
- *           ░     ░ ░      ░  ░
- *
- * Created by Yang.Guo on 2021/6/2.
+ * 网络错误扩展类
+ * @author Yang.Guo on 2021/6/2.
  */
 val Throwable.code: Int
     get() {
-        val errorCode = when (this) {
+        val defaultCode = -1
+        val errorCode: Int = when (this) {
             is HttpStatusCodeException -> this.statusCode //Http状态码异常
-            is ParseException -> this.errorCode     //业务code异常
-            else -> "-1"
+            is ParseException -> this.errorCode.toIntOrNull() ?: defaultCode    //业务code异常
+            else -> defaultCode
         }
-        return try {
-            errorCode.toInt()
-        } catch (e: Exception) {
-            -1
-        }
+        return errorCode
     }
 
 val Throwable.msg: String

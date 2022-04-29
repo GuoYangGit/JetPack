@@ -7,6 +7,10 @@ import com.yangguo.jetpack.mvvm.vo.BannerBean
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
+/**
+ * Banner适配器
+ * @author yang.guo on 2020/09/01
+ */
 class BannerAdapter : BaseBannerAdapter<BannerBean>() {
 
     override fun getLayoutId(viewType: Int): Int {
