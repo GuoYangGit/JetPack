@@ -14,9 +14,9 @@ abstract class BaseActivity : AppCompatActivity(), IView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (userDataBinding()) {
-            setContentView(layoutId())
-        } else {
             initDataBind()
+        } else {
+            setContentView(layoutId())
         }
         initView(savedInstanceState)
     }

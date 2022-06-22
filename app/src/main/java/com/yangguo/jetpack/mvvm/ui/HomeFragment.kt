@@ -79,16 +79,15 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
         viewModel.apply {
             arterialList.observe(viewLifecycleOwner) {
                 it.bindView(binding?.swipeRefresh, adapter, loadService)
-                it.doSuccess { data ->
-                    if (it.refresh) {
-                        adapter.setDiffNewData(data?.toMutableList())
-                    } else if (!data.isNullOrEmpty()) {
-                        adapter.addData(data)
+                    .doSuccess { data ->
+                        if (it.refresh) {
+                            adapter.setDiffNewData(data?.toMutableList())
+                        } else if (!data.isNullOrEmpty()) {
+                            adapter.addData(data)
+                        }
+                    }.doError { throwable ->
+                        showToast(throwable.msg)
                     }
-                }
-                it.doError { throwable ->
-                    showToast(throwable.msg)
-                }
             }
             bannerData.observe(viewLifecycleOwner) {
                 it.doSuccess { data ->

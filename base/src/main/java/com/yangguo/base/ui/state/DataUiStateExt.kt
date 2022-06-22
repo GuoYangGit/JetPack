@@ -12,30 +12,33 @@ import com.yangguo.base.ext.view.showLoading
  *
  * @author  yang.guo on 2022/4/29
  */
-inline fun <T> DataUiState<T>.doStart(block: () -> Unit) {
+inline fun <T> DataUiState<T>.doStart(block: () -> Unit): DataUiState<T> {
     if (this is DataUiState.Start) {
         block.invoke()
     }
+    return this
 }
 
-inline fun <T> DataUiState<T>.doSuccess(block: (data: T?) -> Unit) {
+inline fun <T> DataUiState<T>.doSuccess(block: (data: T?) -> Unit): DataUiState<T> {
     if (this is DataUiState.Success) {
         block.invoke(data)
     }
+    return this
 }
 
-inline fun <T> DataUiState<T>.doError(block: (throwable: Throwable) -> Unit) {
+inline fun <T> DataUiState<T>.doError(block: (throwable: Throwable) -> Unit): DataUiState<T> {
     if (this is DataUiState.Error) {
         block.invoke(error)
     }
+    return this
 }
 
 fun <T> DataUiState<T>.bindView(
     swipeRefreshLayout: SwipeRefreshLayout? = null,
     adapter: BaseQuickAdapter<*, *>? = null,
     loadService: LoadService<*>? = null
-) {
-// 判断是否有加载更多
+): DataUiState<T> {
+    // 判断是否有加载更多
     val isLoadMore = adapter is LoadMoreModule
     doStart {
         if (!refresh) return@doStart
@@ -66,4 +69,5 @@ fun <T> DataUiState<T>.bindView(
             }
         }
     }
+    return this
 }
