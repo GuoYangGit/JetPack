@@ -3,8 +3,6 @@ name: Android CI
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 jobs:
   build:
@@ -12,29 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: gradle
+      - uses: actions/checkout@v3
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
-      
-    - name: actions-feishu
-      # You may pin to the exact commit or the version.
-      # uses: xiachufang/actions-feishu@c5b2c39977b1e99cfb0e2c17920d14d6b94b49e5
-      uses: xiachufang/actions-feishu@v1.2
-      with:
-        # Webhook address
-        webhook: 
-        # Message title
-        title: # optional, default is Actions Feishu
-        # Message body
-        content: 
-        # Message type
-        message_type: # optional, default is post
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: actions-feishu
+        # You may pin to the exact commit or the version.
+        # uses: xiachufang/actions-feishu@c5b2c39977b1e99cfb0e2c17920d14d6b94b49e5
+        uses: xiachufang/actions-feishu@v1.2
+        with:
+          # Webhook address
+          webhook: 'https://open.feishu.cn/open-apis/bot/v2/hook/88a8baf9-5745-4133-a22c-0a24625e6de7'
+          # Message title
+          title: '测试消息'
+          # Message body
+          content: '测试内容'
+          # Message type
+          message_type: post
