@@ -25,16 +25,16 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       
-- name: actions-feishu
-  # You may pin to the exact commit or the version.
-  # uses: xiachufang/actions-feishu@c5b2c39977b1e99cfb0e2c17920d14d6b94b49e5
-  uses: xiachufang/actions-feishu@v1.2
-  with:
-    # Webhook address
-    webhook: 
-    # Message title
-    title: # optional, default is Actions Feishu
-    # Message body
-    content: 
-    # Message type
-    message_type: # optional, default is post
+    - name: actions-feishu
+      # You may pin to the exact commit or the version.
+      # uses: xiachufang/actions-feishu@c5b2c39977b1e99cfb0e2c17920d14d6b94b49e5
+      uses: xiachufang/actions-feishu@v1.2
+      with:
+        # Webhook address
+        webhook: 
+        # Message title
+        title: # optional, default is Actions Feishu
+        # Message body
+        content: 
+        # Message type
+        message_type: # optional, default is post
