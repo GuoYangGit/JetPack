@@ -5,32 +5,28 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.provider.Settings
 import android.text.TextUtils
+import android.widget.Toast
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import java.time.Duration
 
 /***
  *
- *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
- * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
- * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
- * ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
- * ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
- *  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
- *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
- *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
- *           ░     ░ ░      ░  ░
- *
- * Created by Yang.Guo on 2021/5/31.
+ * Context扩展类
+ * @author Yang.Guo on 2021/5/31.
  */
 /**
  * 获取设备屏幕宽度
  */
-val Context.screenWidth
+val Context.screenWidth: Int
     get() = resources.displayMetrics.widthPixels
 
 /**
  * 获取设备屏幕高度
  */
-val Context.screenHeight
+val Context.screenHeight: Int
     get() = resources.displayMetrics.heightPixels
 
 /**
@@ -60,12 +56,7 @@ fun Context.copyToClipboard(text: String, label: String = "JetpackMvvm") {
 /**
  * 检查是否启用无障碍服务
  */
-fun Context.checkAccessibilityServiceEnabled(serviceName: String): Boolean {
-    val settingValue =
-        Settings.Secure.getString(
-            applicationContext.contentResolver,
-            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
-        )
+fun checkAccessibilityServiceEnabled(serviceName: String): Boolean {
     var result = false
     val splitter = TextUtils.SimpleStringSplitter(':')
     while (splitter.hasNext()) {
@@ -76,3 +67,21 @@ fun Context.checkAccessibilityServiceEnabled(serviceName: String): Boolean {
     }
     return result
 }
+
+/**
+ * 显示toast
+ */
+fun Fragment.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) =
+    context?.showToast(text, duration)
+
+/**
+ * 显示toast
+ */
+fun Context.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, text, duration).show()
+}
+
+/**
+ * 获取Color
+ */
+fun Context.getCompatColor(@ColorRes colorID: Int): Int = ContextCompat.getColor(this, colorID)

@@ -4,23 +4,31 @@ import android.view.View
 
 /***
  *
- *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
- * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
- * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
- * ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
- * ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
- *  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
- *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
- *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
- *           ░     ░ ░      ░  ░
- *
- * Created by Yang.Guo on 2021/5/31.
+ * View的扩展类
+ * @author Yang.Guo on 2021/5/31.
  */
 /**
  * 获取设备的density
  */
 val View.dpi: Int
     get() = context.resources.displayMetrics.density.toInt()
+
+/**
+ * dp值转换为px
+ */
+fun View.dp2px(dp: Int): Int {
+    val scale = resources.displayMetrics.density
+    return (dp * scale + 0.5f).toInt()
+}
+
+/**
+ * px值转换成dp
+ */
+fun View.px2dp(px: Int): Int {
+    val scale = resources.displayMetrics.density
+    return (px / scale + 0.5f).toInt()
+}
+
 /**
  * 设置view显示
  */
@@ -45,10 +53,10 @@ fun View.gone() {
 /**
  * 根据条件设置view显示隐藏 为true 显示，为false 隐藏
  */
-fun View.visibleOrGone(flag:Boolean) {
-    visibility = if(flag){
+fun View.visibleOrGone(flag: Boolean) {
+    visibility = if (flag) {
         View.VISIBLE
-    }else{
+    } else {
         View.GONE
     }
 }
@@ -56,28 +64,12 @@ fun View.visibleOrGone(flag:Boolean) {
 /**
  * 根据条件设置view显示隐藏 为true 显示，为false 隐藏
  */
-fun View.visibleOrInvisible(flag:Boolean) {
-    visibility = if(flag){
+fun View.visibleOrInvisible(flag: Boolean) {
+    visibility = if (flag) {
         View.VISIBLE
-    }else{
+    } else {
         View.INVISIBLE
     }
-}
-
-/**
- * dp值转换为px
- */
-fun View.dp2px(dp: Int): Int {
-    val scale = resources.displayMetrics.density
-    return (dp * scale + 0.5f).toInt()
-}
-
-/**
- * px值转换成dp
- */
-fun View.px2dp(px: Int): Int {
-    val scale = resources.displayMetrics.density
-    return (px / scale + 0.5f).toInt()
 }
 
 /**

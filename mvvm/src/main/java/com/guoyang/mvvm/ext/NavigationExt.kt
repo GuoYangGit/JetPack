@@ -4,20 +4,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import com.guoyang.mvvm.navigation.NavHostFragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 
 /**
- * 作者　: hegaojian
- * 时间　: 2020/5/2
- * 描述　:
+ * Navigation扩展类
+ * @author Yang.Guo on 2021/5/31.
  */
 fun Fragment.nav(): NavController {
-    return NavHostFragment.findNavController(this)
+    return findNavController()
 }
 
-fun nav(view: View): NavController {
-    return Navigation.findNavController(view)
+fun View.nav(): NavController {
+    return findNavController()
 }
 
 var lastNavTime = 0L
@@ -34,7 +33,7 @@ fun NavController.navigateAction(resId: Int, bundle: Bundle? = null, interval: L
         lastNavTime = currentTime
         try {
             navigate(resId, bundle)
-        }catch (ignore:Exception){
+        } catch (ignore: Exception) {
             //防止出现 当 fragment 中 action 的 duration设置为 0 时，连续点击两个不同的跳转会导致如下崩溃 #issue53
         }
     }

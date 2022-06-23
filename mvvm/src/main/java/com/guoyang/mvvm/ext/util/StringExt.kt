@@ -1,5 +1,6 @@
 package com.guoyang.mvvm.ext.util
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
@@ -8,22 +9,13 @@ import java.util.regex.Pattern
 
 /***
  *
- *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
- * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
- * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
- * ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
- * ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
- *  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
- *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
- *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
- *           ░     ░ ░      ░  ░
- *
- * Created by Yang.Guo on 2021/5/31.
+ * String扩展类
+ * @author Yang.Guo on 2021/5/31.
  */
 
-@RequiresApi(Build.VERSION_CODES.N)
+@SuppressLint("InlinedApi")
 fun String.toHtml(flag: Int = Html.FROM_HTML_MODE_LEGACY): Spanned {
-    return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Html.fromHtml(this, flag)
     } else {
         Html.fromHtml(this)
@@ -36,7 +28,7 @@ fun String.toHtml(flag: Int = Html.FROM_HTML_MODE_LEGACY): Spanned {
 fun String?.isPhone(): Boolean {
     return this?.let {
         Pattern.matches(it, "0?(13|14|15|16|17|18|19)[0-9]{9}")
-    }?:let {
+    } ?: let {
         false
     }
 }
@@ -53,7 +45,7 @@ fun String?.isTel(): Boolean {
         val matcher5 = Pattern.matches("^800\\d{7,8}$", this)
         val matcher6 = Pattern.matches("^800-\\d{7,8}$", this)
         return matcher1 || matcher2 || matcher3 || matcher4 || matcher5 || matcher6
-    }?:let {
+    } ?: let {
         false
     }
 }
@@ -64,7 +56,7 @@ fun String?.isTel(): Boolean {
 fun String?.isEmail(): Boolean {
     return this?.let {
         Pattern.matches(this, "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$")
-    }?:let {
+    } ?: let {
         false
     }
 }

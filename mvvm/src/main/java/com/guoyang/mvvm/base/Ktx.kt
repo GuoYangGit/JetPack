@@ -4,46 +4,37 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.startup.Initializer
-import com.guoyang.mvvm.ext.lifecycle.KtxAppLifeObserver
-import com.guoyang.mvvm.ext.lifecycle.KtxLifeCycleCallBack
+import com.guoyang.mvvm.ext.lifecycle.AppLifeObserver
+import com.guoyang.mvvm.ext.lifecycle.ActivityLifeCycleCallBack
 
 /***
- *
- *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
- * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
- * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
- * ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
- * ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
- *  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
- *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
- *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
- *           ░     ░ ░      ░  ░
- *
- * Created by Yang.Guo on 2021/5/31.
+ * App启动全局基础类
+ * @author Yang.Guo on 2021/5/31.
  */
 
+/**
+ * 全局的AppContext
+ */
 val appContext: Application by lazy {
     Ktx.app
 }
 
 object Ktx {
     lateinit var app: Application
-    private var watchActivityLife = true
-    private var watchAppLife = true
 
     fun initialize(context: Context): Ktx {
-        val application = context.applicationContext as Application
-        install(application)
+        app = context.applicationContext as Application
+        // 注册全局的Activity生命周期监听
+        app.registerActivityLifecycleCallbacks(ActivityLifeCycleCallBack())
+        // 注册全局的App生命周期监听
+        ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifeObserver)
         return this
-    }
-
-    private fun install(application: Application) {
-        app = application
-        if (watchActivityLife) app.registerActivityLifecycleCallbacks(KtxLifeCycleCallBack())
-        if (watchAppLife) ProcessLifecycleOwner.get().lifecycle.addObserver(KtxAppLifeObserver)
     }
 }
 
+/**
+ * AppStartUp启动类
+ */
 class KtxInitializer : Initializer<Ktx> {
     override fun create(context: Context): Ktx {
         return Ktx.initialize(context)

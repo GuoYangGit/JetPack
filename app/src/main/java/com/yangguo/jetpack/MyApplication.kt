@@ -1,15 +1,20 @@
 package com.yangguo.jetpack
 
-import android.app.Application
+import coil.Coil
 import coil.ImageLoader
+import coil.util.CoilUtils
+import com.chad.library.adapter.base.module.LoadMoreModuleConfig.defLoadMoreView
+import com.guoyang.mvvm.base.BaseApp
 import com.guoyang.mvvm.ext.getProcessName
-import com.guoyang.mvvm.ext.util.mvvmLog
+import com.guoyang.mvvm.ext.util.MVVM_LOG
 import com.kingja.loadsir.core.LoadSir
-import com.tencent.bugly.Bugly
 import com.tencent.bugly.crashreport.CrashReport
+import com.yangguo.base.weight.recyclerview.CustomLoadMoreView
 import dagger.hilt.android.HiltAndroidApp
+import okhttp3.OkHttpClient
 import rxhttp.RxHttpPlugins
 import javax.inject.Inject
+
 
 /***
  * You may think you know what the following code does.
@@ -36,7 +41,7 @@ import javax.inject.Inject
  * QQ:352391291
  */
 @HiltAndroidApp
-class MyApplication : Application() {
+class MyApplication : BaseApp() {
     @Inject
     lateinit var imageLoader: ImageLoader
 
@@ -48,9 +53,12 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        mvvmLog = BuildConfig.DEBUG
+        MVVM_LOG = BuildConfig.DEBUG
         rxHttpPlugins.setDebug(BuildConfig.DEBUG)
         loadSir.commit()
+        // 在 Application 中配置全局自定义的 LoadMoreView
+        defLoadMoreView = CustomLoadMoreView()
+        Coil.setImageLoader(imageLoader)
 
         //初始化Bugly
         initBugly()
@@ -69,7 +77,7 @@ class MyApplication : Application() {
         val strategy = CrashReport.UserStrategy(context)
         strategy.isUploadProcess = processName == null || processName == packageName
         // 初始化Bugly
-        Bugly.init(context, if (BuildConfig.DEBUG) "xxx" else "a52f2b5ebb", BuildConfig.DEBUG)
+//        Bugly.init(context, if (BuildConfig.DEBUG) "xxx" else "a52f2b5ebb", BuildConfig.DEBUG)
         // bugly应用更新
 //        Beta.checkUpgrade(false, true)
     }

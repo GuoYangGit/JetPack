@@ -3,11 +3,11 @@ package com.yangguo.jetpack.mvvm.ui
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.guoyang.mvvm.base.appContext
+import com.guoyang.mvvm.ext.util.logD
 import com.yangguo.base.ui.BaseVMFragment
-import com.yangguo.base.util.SettingUtil
 import com.yangguo.jetpack.R
 import com.yangguo.jetpack.databinding.FragmentMainBinding
+import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import dagger.hilt.android.AndroidEntryPoint
 
 /***
@@ -26,35 +26,35 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class MainFragment : BaseVMFragment<FragmentMainBinding>() {
-    private val fragmentList: List<Fragment> by lazy {
-        listOf(
-            HomeFragment(),
-            HomeFragment(),
-            HomeFragment(),
-            HomeFragment(),
-            HomeFragment()
-        )
-    }
 
     override fun layoutId(): Int = R.layout.fragment_main
 
     override fun initView(savedInstanceState: Bundle?) {
-        mDataBinding.run {
+        binding?.run {
+            // 设置ViewPager
             mainViewpager.run {
-                isUserInputEnabled = false // 设置不可以滑动
-                adapter = object : FragmentStateAdapter(this@MainFragment) {
-                    override fun getItemCount(): Int = fragmentList.size
-
-                    override fun createFragment(position: Int): Fragment = fragmentList[position]
-                }
+                // 设置不可以滑动
+                isUserInputEnabled = false
+                // 设置适配器
+                adapter =
+                    object :
+                        FragmentStateAdapter(childFragmentManager, viewLifecycleOwner.lifecycle) {
+                        override fun getItemCount(): Int = 5
+                        override fun createFragment(position: Int): Fragment {
+                            return when (position) {
+                                0 -> HomeFragment()
+                                1 -> ProjectFragment()
+                                else -> MeFragment()
+                            }
+                        }
+                    }
             }
-
-            mainBtn.run {
-                enableAnimation(true) // 点击动画(默认开启)
-                enableShiftingMode(false) // 导航条位移模式
-                enableItemShiftingMode(true) // 子菜单位移模式
-                setTextSize(12F)
-                setOnNavigationItemSelectedListener {
+            // 设置底部导航栏
+            bottomNavigationView.run {
+                // 设置距离底部导航栏的padding
+                addNavigationBarBottomPadding()
+                // 设置选中监听
+                setOnItemSelectedListener {
                     when (it.itemId) {
                         R.id.menu_main -> mainViewpager.setCurrentItem(0, false)
                         R.id.menu_project -> mainViewpager.setCurrentItem(1, false)

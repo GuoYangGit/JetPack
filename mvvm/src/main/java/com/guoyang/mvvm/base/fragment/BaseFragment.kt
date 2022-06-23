@@ -1,49 +1,21 @@
 package com.guoyang.mvvm.base.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.guoyang.mvvm.base.IView
 
 /***
  *
- *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
- * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
- * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
- * ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
- * ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
- *  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
- *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
- *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
- *           ░     ░ ░      ░  ░
- *
- * Created by Yang.Guo on 2021/5/31.
+ * 通用的Fragment基类
+ * @author Yang.Guo on 2021/5/31.
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : Fragment(), IView {
 
     //是否第一次加载
     private var isFirst: Boolean = true
-
-    lateinit var mActivity: AppCompatActivity
-
-    abstract fun layoutId(): Int
-
-    /**
-     * 初始化view
-     */
-    abstract fun initView(savedInstanceState: Bundle?)
-
-    abstract fun showLoading(message: String)
-
-    abstract fun dismissLoading()
-
-    /**
-     * Fragment执行onCreate后触发的方法
-     */
-    open fun initData() {}
 
     /**
      * 懒加载
@@ -54,20 +26,12 @@ abstract class BaseFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(layoutId(), container, false)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mActivity = context as AppCompatActivity
-    }
+    ): View? = inflater.inflate(layoutId(), container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isFirst = true
         initView(savedInstanceState)
-        initData()
     }
 
     override fun onResume() {
@@ -79,9 +43,8 @@ abstract class BaseFragment : Fragment() {
      * 是否需要懒加载
      */
     private fun onVisible() {
-        if (isFirst) {
-            lazyLoadData()
-            isFirst = false
-        }
+        if (!isFirst) return
+        lazyLoadData()
+        isFirst = false
     }
 }

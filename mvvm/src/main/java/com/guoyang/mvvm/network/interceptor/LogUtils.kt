@@ -2,7 +2,7 @@ package com.guoyang.mvvm.network.interceptor
 
 import android.text.TextUtils
 import android.util.Log
-import com.guoyang.mvvm.ext.util.mvvmLog
+import com.guoyang.mvvm.ext.util.MVVM_LOG
 
 /**
  * 作者　: hegaojian
@@ -12,7 +12,7 @@ import com.guoyang.mvvm.ext.util.mvvmLog
 object LogUtils {
     private const val DEFAULT_TAG = "JetpackMvvm"
     fun debugInfo(tag: String?, msg: String?) {
-        if (!mvvmLog || TextUtils.isEmpty(msg)) {
+        if (!MVVM_LOG || TextUtils.isEmpty(msg)) {
             return
         }
         Log.d(tag, msg!!)
@@ -26,7 +26,7 @@ object LogUtils {
     }
 
     fun warnInfo(tag: String?, msg: String?) {
-        if (!mvvmLog || TextUtils.isEmpty(msg)) {
+        if (!MVVM_LOG || TextUtils.isEmpty(msg)) {
             return
         }
         Log.w(tag, msg!!)
@@ -47,7 +47,7 @@ object LogUtils {
      */
     fun debugLongInfo(tag: String?, msg: String) {
         var msg = msg
-        if (!mvvmLog || TextUtils.isEmpty(msg)) {
+        if (!MVVM_LOG || TextUtils.isEmpty(msg)) {
             return
         }
         msg = msg.trim { it <= ' ' }

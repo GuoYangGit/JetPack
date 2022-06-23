@@ -32,12 +32,6 @@ class LogInterceptor : Interceptor {
     private val mPrinter: FormatPrinter = DefaultFormatPrinter()
     private val printLevel = Level.ALL
 
-    constructor() {}
-
-    constructor(printLevel: Level?) {
-
-    }
-
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -45,7 +39,7 @@ class LogInterceptor : Interceptor {
             printLevel == Level.ALL || printLevel != Level.NONE && printLevel == Level.REQUEST
         if (logRequest) {
             //打印请求信息
-            if (request.body != null && isParseable(
+            if (request.body != null && isParable(
                     request.body!!.contentType()
                 )
             ) {
@@ -57,8 +51,7 @@ class LogInterceptor : Interceptor {
         val logResponse =
             printLevel == Level.ALL || printLevel != Level.NONE && printLevel == Level.RESPONSE
         val t1 = if (logResponse) System.nanoTime() else 0
-        val originalResponse: Response
-        originalResponse = try {
+        val originalResponse: Response = try {
             chain.proceed(request)
         } catch (e: Exception) {
             e.message?.let {
@@ -71,7 +64,7 @@ class LogInterceptor : Interceptor {
 
         //打印响应结果
         var bodyString: String? = null
-        if (responseBody != null && isParseable(responseBody.contentType())) {
+        if (responseBody != null && isParable(responseBody.contentType())) {
             bodyString = printResult(request, originalResponse, logResponse)
         }
         if (logResponse) {
@@ -86,7 +79,7 @@ class LogInterceptor : Interceptor {
             val isSuccessful = originalResponse.isSuccessful
             val message = originalResponse.message
             val url = originalResponse.request.url.toString()
-            if (responseBody != null && isParseable(responseBody.contentType())) {
+            if (responseBody != null && isParable(responseBody.contentType())) {
                 mPrinter.printJsonResponse(
                     TimeUnit.NANOSECONDS.toMillis(t2 - t1), isSuccessful,
                     code, header, responseBody.contentType(), bodyString, segmentList, message, url
@@ -155,21 +148,25 @@ class LogInterceptor : Interceptor {
             charset = contentType.charset(charset)
         }
         //content 使用 gzip 压缩
-        return if ("gzip".equals(encoding, ignoreCase = true)) {
-            //解压
-            decompressForGzip(
-                clone.readByteArray(),
-                convertCharset(charset)
-            )
-        } else if ("zlib".equals(encoding, ignoreCase = true)) {
-            //content 使用 zlib 压缩
-            decompressToStringForZlib(
-                clone.readByteArray(),
-                convertCharset(charset)
-            )
-        } else {
-            //content 没有被压缩, 或者使用其他未知压缩方式
-            clone.readString(charset)
+        return when {
+            "gzip".equals(encoding, ignoreCase = true) -> {
+                //解压
+                decompressForGzip(
+                    clone.readByteArray(),
+                    convertCharset(charset)
+                )
+            }
+            "zlib".equals(encoding, ignoreCase = true) -> {
+                //content 使用 zlib 压缩
+                decompressToStringForZlib(
+                    clone.readByteArray(),
+                    convertCharset(charset)
+                )
+            }
+            else -> {
+                //content 没有被压缩, 或者使用其他未知压缩方式
+                clone.readString(charset)
+            }
         }
     }
 
@@ -234,7 +231,7 @@ class LogInterceptor : Interceptor {
          * @param mediaType [MediaType]
          * @return `true` 为可以解析
          */
-        fun isParseable(mediaType: MediaType?): Boolean {
+        fun isParable(mediaType: MediaType?): Boolean {
             return if (mediaType?.type == null) {
                 false
             } else isText(mediaType) || isPlain(
@@ -254,37 +251,36 @@ class LogInterceptor : Interceptor {
             } else "text" == mediaType.type
         }
 
-        fun isPlain(mediaType: MediaType?): Boolean {
+        private fun isPlain(mediaType: MediaType?): Boolean {
             return if (mediaType?.subtype == null) {
                 false
-            } else mediaType.subtype
-                .toLowerCase().contains("plain")
+            } else mediaType.subtype.lowercase(Locale.getDefault()).contains("plain")
         }
 
         @JvmStatic
         fun isJson(mediaType: MediaType?): Boolean {
             return if (mediaType?.subtype == null) {
                 false
-            } else mediaType.subtype.toLowerCase(Locale.getDefault()).contains("json")
+            } else mediaType.subtype.lowercase(Locale.getDefault()).contains("json")
         }
 
         @JvmStatic
         fun isXml(mediaType: MediaType?): Boolean {
             return if (mediaType?.subtype == null) {
                 false
-            } else mediaType.subtype.toLowerCase(Locale.getDefault()).contains("xml")
+            } else mediaType.subtype.lowercase(Locale.getDefault()).contains("xml")
         }
 
-        fun isHtml(mediaType: MediaType?): Boolean {
+        private fun isHtml(mediaType: MediaType?): Boolean {
             return if (mediaType?.subtype == null) {
                 false
-            } else mediaType.subtype.toLowerCase(Locale.getDefault()).contains("html")
+            } else mediaType.subtype.lowercase(Locale.getDefault()).contains("html")
         }
 
-        fun isForm(mediaType: MediaType?): Boolean {
+        private fun isForm(mediaType: MediaType?): Boolean {
             return if (mediaType?.subtype == null) {
                 false
-            } else mediaType.subtype.toLowerCase(Locale.getDefault())
+            } else mediaType.subtype.lowercase(Locale.getDefault())
                 .contains("x-www-form-urlencoded")
         }
 

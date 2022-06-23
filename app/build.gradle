@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
@@ -16,18 +17,18 @@ android {
         multiDexEnabled true
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
 }
 
 dependencies {
     //hilt
-    implementation "com.google.dagger:hilt-android:2.36"
-    kapt "com.google.dagger:hilt-compiler:2.36"
+    implementation Libs.hiltAndroid
+    kapt Libs.hiltCompiler
 
-    //底部bottomBar
-    implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.4'
+    //透明状态栏
+    implementation Libs.ultimateBarX
 
     //项目核心框架
     implementation project(path: ':base')
