@@ -6,15 +6,16 @@ on:
 
 jobs:
   build:
-
+    # 允许所需虚拟机环境、必填字段
     runs-on: ubuntu-latest
-
+    # 运行步骤
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v3
       - name: set up JDK 11
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: '8'
           distribution: 'temurin'
           cache: gradle
 
